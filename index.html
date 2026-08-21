@@ -12,80 +12,146 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
 <style>
   :root{
-    --bg:#0b1220; --bg2:#101a2e; --card:#131f36; --line:#22304d;
-    --txt:#e8edf6; --mut:#9fb0c9; --acc:#ff7a00; --grn:#5ee98a;
+    --bg:#070d18; --bg2:#0c1526; --card:#101b30; --card2:#14203a; --line:#22304d; --line2:#2e4066;
+    --txt:#eef3fb; --mut:#9fb0c9; --mut2:#7e90ad; --acc:#ff7a00; --acc2:#ffa14d; --grn:#5ee98a;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);color:var(--txt);
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);
        font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.55}
-  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
-  header{padding:26px 0;display:flex;align-items:center;justify-content:space-between}
-  .logo{font-weight:800;font-size:20px;letter-spacing:.5px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;
+         background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
   .logo span{color:var(--acc)}
   .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
   .nav a:hover{color:var(--txt)}
-  .hero{text-align:center;padding:64px 0 44px}
-  .hero h1{font-size:clamp(30px,5vw,46px);font-weight:800;line-height:1.15}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .nav .navcta:hover{color:#14100a;filter:brightness(1.08)}
+
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero{text-align:center;padding:72px 0 40px}
+  .hero h1{font-size:clamp(30px,5vw,48px);font-weight:800;line-height:1.12;margin-top:14px}
   .hero h1 em{color:var(--acc);font-style:normal}
-  .hero p{color:var(--mut);max-width:640px;margin:16px auto 0;font-size:17px}
-  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .hero p{color:var(--mut);max-width:660px;margin:18px auto 0;font-size:17px}
+  .herocta{display:flex;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+  .btn{display:inline-block;text-align:center;background:var(--acc);color:#14100a;font-weight:700;
+       padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px;border:none;cursor:pointer}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line2)}
+  .btn.ghost:hover{border-color:var(--acc);color:var(--acc2)}
+  .btn.free{background:var(--grn)}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
   .badge{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mut)}
+
+  .secthead{text-align:center;padding:56px 0 8px}
+  .secthead h2{font-size:clamp(24px,3.4vw,32px);margin-top:12px}
+  .secthead p{color:var(--mut);max-width:640px;margin:10px auto 0;font-size:15.5px}
+
+  .featgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;padding:26px 0 10px}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .feat .ico{font-size:26px}
+  .feat h3{font-size:16.5px;margin:10px 0 6px}
+  .feat p{color:var(--mut);font-size:14px}
+
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;padding:28px 0 12px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
         display:flex;flex-direction:column;transition:transform .15s ease,border-color .15s ease}
   .card:hover{transform:translateY(-3px);border-color:#33456b}
   .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0a0f1c}
   .cbody{padding:20px;display:flex;flex-direction:column;flex:1}
-  .kicker{font-size:11px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
-  .card h2{font-size:19px;margin:8px 0 8px}
+  .card .kicker{font-size:11px;letter-spacing:2px}
+  .card h2{font-size:19px;margin:8px 0}
   .card ul{list-style:none;margin:4px 0 14px}
   .card li{color:var(--mut);font-size:14px;padding:3px 0 3px 20px;position:relative}
   .card li:before{content:"✓";position:absolute;left:0;color:var(--grn);font-weight:700}
   .price-row{margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:14px;border-top:1px solid var(--line)}
   .price{font-size:24px;font-weight:800}
   .price small{font-size:12px;color:var(--mut);font-weight:400}
-  .btn{display:inline-block;text-align:center;background:var(--acc);color:#14100a;font-weight:700;
-       padding:11px 18px;border-radius:10px;text-decoration:none;font-size:14px;flex:1}
-  .btn:hover{filter:brightness(1.08)}
-  .btn.free{background:var(--grn)}
+  .card .btn{flex:1;padding:11px 18px;font-size:14px}
+
+  .compare{padding:30px 0 8px}
+  .cmp{width:100%;border-collapse:separate;border-spacing:0;margin-top:20px;background:var(--card);
+       border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+  .cmp th,.cmp td{padding:13px 18px;text-align:left;border-bottom:1px solid var(--line)}
+  .cmp tr:last-child td{border-bottom:none}
+  .cmp thead th{background:var(--card2);font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)}
+  .cmp thead th.us{color:var(--acc)}
+  .cmp td.no{color:#ff8f8f}
+  .cmp td.yes{color:var(--grn);font-weight:600}
+  .cmp td.dim{color:var(--mut2)}
+
   .strip{background:var(--card);border:1px solid var(--line);border-radius:16px;
          padding:26px;margin:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
   .strip div b{display:block;font-size:15px;margin-bottom:4px}
   .strip div span{color:var(--mut);font-size:13.5px}
+
+  .faq{padding:26px 0 10px}
+  .faq h2,.cta h2{font-size:clamp(24px,3.4vw,30px);text-align:center;margin-bottom:18px}
   details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:10px 0}
+  details[open]{border-color:var(--line2)}
   summary{cursor:pointer;font-weight:600}
   details p{color:var(--mut);margin-top:10px;font-size:14.5px}
-  .faq{padding:26px 0 10px}
-  .faq h2,.cta h2{font-size:24px;text-align:center;margin-bottom:18px}
-  .cta{text-align:center;padding:40px 0 70px}
-  .cta p{color:var(--mut);margin-bottom:22px}
-  .cta .btn{display:inline-block;flex:none;padding:14px 34px;font-size:16px}
-  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;
+
+  .cta{text-align:center;padding:46px 0 30px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+            border-radius:18px;padding:44px 26px}
+  .cta p{color:var(--mut);margin-bottom:24px}
+  .cta .btn{padding:14px 34px;font-size:16px}
+  .cta .mini{font-size:12.5px;color:var(--mut2);margin-top:14px}
+
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:40px;
          display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   footer a{color:var(--mut)}
+
+  @media(max-width:640px){
+    .nav a:not(.navcta){display:none}
+    .hero{padding:52px 0 30px}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="logo">mate<span>mplates</span></div>
+  <a class="logo" href="#">mate<span>mplates</span></a>
   <nav class="nav">
+    <a href="#features">Why us</a>
     <a href="#templates">Templates</a>
+    <a href="#compare">Compare</a>
     <a href="#faq">FAQ</a>
-    <a href="https://matemplate.gumroad.com">Store ↗</a>
+    <a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h1>n8n workflows that earn their keep.<br><em>Import. Plug in keys. Run.</em></h1>
-  <p>Production-grade automation templates with the boring parts done right — test modes,
-     dry-run safety gates, dedupe, error handling, and docs that assume you have other things to do.</p>
+  <div class="kicker">Production-ready n8n templates</div>
+  <h1>Stop wiring workflows from scratch.<br><em>Import. Plug in keys. Run.</em></h1>
+  <p>Every template ships with the boring parts done right — test modes, dry-run safety gates,
+     dedupe, error handling, and docs that assume you have other things to do.</p>
+  <div class="herocta">
+    <a class="btn" href="#templates">Browse templates</a>
+    <a class="btn ghost" href="https://matemplate.gumroad.com/l/iyjtcg">Try the free sampler</a>
+  </div>
   <div class="badges">
     <span class="badge">✓ Import-ready JSON</span>
     <span class="badge">✓ Step-by-step setup docs</span>
     <span class="badge">✓ Test mode — try before real runs</span>
     <span class="badge">✓ 30-day satisfaction promise</span>
+  </div>
+</section>
+
+<section id="features">
+  <div class="secthead">
+    <div class="kicker">Why choose us</div>
+    <h2>Everything the DIY route forgets</h2>
+    <p>Powerful workflow templates with the operational details already handled.</p>
+  </div>
+  <div class="featgrid">
+    <div class="feat"><div class="ico">🧩</div><h3>Built for n8n 2.x</h3><p>Tested on current self-hosted n8n. Single-output Code nodes throughout — no fragile multi-branch imports.</p></div>
+    <div class="feat"><div class="ico">🛡️</div><h3>Safe by design</h3><p>Test mode with dummy data, dry-run gates before any external write, kill switches. Your first run can't break anything.</p></div>
+    <div class="feat"><div class="ico">📄</div><h3>Real documentation</h3><p>Every parameter explained, troubleshooting included, setup from zero in under 15 minutes.</p></div>
+    <div class="feat"><div class="ico">💬</div><h3>Human support</h3><p>Stuck on setup? Email me — included with every purchase, not an upsell.</p></div>
   </div>
 </section>
 
@@ -147,15 +213,33 @@
 
 </section>
 
-<section class="strip">
-  <div><b>🧩 Built for n8n 2.x</b><span>Tested on current self-hosted n8n. Single-output Code nodes throughout — no fragile multi-branch imports.</span></div>
-  <div><b>🛡️ Safe by design</b><span>Test mode with dummy data, dry-run gates before any external write, kill switches. Your first run can't break anything.</span></div>
-  <div><b>📄 Real documentation</b><span>Every parameter explained, troubleshooting included, setup from zero in under 15 minutes.</span></div>
-  <div><b>💬 Human support</b><span>Stuck on setup? Email me — included with every purchase, not an upsell.</span></div>
+<section class="compare" id="compare">
+  <div class="secthead">
+    <div class="kicker">Comparison</div>
+    <h2>Same n8n. Very different amount of work.</h2>
+    <p>One of these roads gets your automation live this afternoon.</p>
+  </div>
+  <table class="cmp">
+    <thead>
+      <tr><th>Building from scratch</th><th class="us">With a Matemplates template</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="no">Hours researching nodes &amp; APIs</td><td class="yes">Import the JSON — 1 minute</td></tr>
+      <tr><td class="no">Wiring credentials by trial &amp; error</td><td class="yes">README points at every field</td></tr>
+      <tr><td class="no">Debugging silent failures in production</td><td class="yes">Error handling &amp; alerts built in</td></tr>
+      <tr><td class="no">Risking real data on a first run</td><td class="yes">Test mode + dry-run gates</td></tr>
+      <tr><td class="no">Dedupe &amp; rate limits: your problem</td><td class="yes">Handled before you think of them</td></tr>
+      <tr><td class="dim">Total: your evening, maybe your weekend</td><td class="yes">Total: about 15 minutes to live</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="faq" id="faq">
-  <h2>Questions, answered</h2>
+  <div class="secthead">
+    <div class="kicker">FAQ</div>
+    <h2>Questions, answered</h2>
+  </div>
+  <div>
   <details>
     <summary>What is n8n, and do I need my own instance?</summary>
     <p>n8n is a free, open-source workflow automation tool (self-hosted, or their cloud plan).
@@ -164,7 +248,17 @@
   <details>
     <summary>What exactly do I get after buying?</summary>
     <p>An import-ready workflow JSON file, a README with step-by-step setup (including where each API key goes),
-       and support by email if anything doesn't work as described.</p>
+       and support if anything doesn't work as described.</p>
+  </details>
+  <details>
+    <summary>How long does setup actually take?</summary>
+    <p>About 15 minutes for the lead enrichment template, 5 for the notifier. Download, import the JSON,
+       paste in the API keys the README points to, run the built-in test mode. No coding.</p>
+  </details>
+  <details>
+    <summary>Does it work on n8n Cloud or only self-hosted?</summary>
+    <p>Both. The templates use standard nodes available on every n8n plan. Self-hosted gives you no execution
+       limits; n8n Cloud works too within its plan quotas.</p>
   </details>
   <details>
     <summary>Are there running costs?</summary>
@@ -172,21 +266,53 @@
        and optional lookup APIs — costs are usage-based and documented in the README so there are no surprises.</p>
   </details>
   <details>
+    <summary>Can I modify the workflows?</summary>
+    <p>Yes — it's your copy. Add nodes, change triggers, rebrand the outputs. The only thing you can't do is
+       resell or redistribute the template files themselves.</p>
+  </details>
+  <details>
+    <summary>Do I get future updates?</summary>
+    <p>Yes. Every improvement to a template you own is a free re-download from your Gumroad library, forever.</p>
+  </details>
+  <details>
     <summary>What if it doesn't work for me?</summary>
     <p>Every template has a test mode that runs on dummy data with zero API cost. If it doesn't do what the page says,
        email within 30 days for a full refund — no questions asked.</p>
   </details>
+  <details>
+    <summary>Can I use this for client work?</summary>
+    <p>Absolutely — agencies and freelancers deploy these for clients all the time. One license per deployment;
+       need many client installs? Email for a bulk arrangement.</p>
+  </details>
+  <details>
+    <summary>I'm stuck. What now?</summary>
+    <p>Email me — every purchase includes setup help. You get a real answer from the person who built the thing,
+       usually within a day.</p>
+  </details>
+  </div>
 </section>
 
 <section class="cta">
-  <h2>Stop rebuilding the same workflows.</h2>
-  <p>Grab a template, import it, and get your evening back.</p>
-  <a class="btn" href="https://matemplate.gumroad.com">Browse the store →</a>
+  <div class="box">
+    <h2>Need a template that doesn't exist yet?</h2>
+    <p>Tell me the workflow you're fighting with — if it's a good fit, I'll build it.
+       Custom work quoted per project.</p>
+    <a class="btn" href="mailto:support@matemplates.com?subject=Custom%20n8n%20workflow">Ask about custom work</a>
+    <div class="mini">We usually reply within a day.</div>
+  </div>
+</section>
+
+<section class="cta" style="padding-top:0">
+  <div class="box">
+    <h2>Stop rebuilding the same workflows.</h2>
+    <p>Grab a template, import it, and get your evening back.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store →</a>
+  </div>
 </section>
 
 <footer>
   <div>© 2026 Matemplates · n8n workflow templates</div>
-  <div><a href="https://matemplate.gumroad.com">Gumroad store ↗</a> · support@matemplates.com</div>
+  <div><a href="https://matemplate.gumroad.com">Gumroad store ↗</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
 </footer>
 
 </div>
