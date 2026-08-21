@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policies — Matemplates</title>
+<meta name="description" content="Matemplates refund policy, license terms, support and privacy. 30-day money-back promise on every n8n template.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{
+    --bg:#070d18; --bg2:#0c1526; --card:#101b30; --line:#22304d; --line2:#2e4066;
+    --txt:#eef3fb; --mut:#9fb0c9; --acc:#ff7a00;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);
+       font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  header .btn{background:var(--acc);color:#14100a;font-weight:700;padding:9px 18px;border-radius:9px;text-decoration:none;font-size:14px}
+  h1{font-size:clamp(26px,4vw,36px);margin:44px 0 6px}
+  .sub{color:var(--mut);margin-bottom:30px;font-size:15.5px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin:16px 0}
+  h2{font-size:20px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  h2 .tag{font-size:11px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  p,li{color:var(--mut);font-size:15px;margin:8px 0}
+  ul{padding-left:22px;margin:10px 0}
+  li::marker{color:var(--acc)}
+  b{color:var(--txt)}
+  .hl{border-left:3px solid var(--acc);padding:10px 16px;background:rgba(255,122,0,.06);
+      border-radius:0 10px 10px 0;color:var(--txt);font-size:14.5px;margin:14px 0}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:40px;
+         display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <a class="btn" href="https://matemplate.gumroad.com">Store ↗</a>
+</header>
+
+<h1>Policies</h1>
+<p class="sub">Plain-language terms for every Matemplates template. Last updated: August 2026.</p>
+
+<section id="refunds">
+  <h2><span class="tag">Refunds</span> 30-day money-back promise</h2>
+  <p>If a template doesn't do what this site says it does, email us within <b>30 days of purchase</b>
+     and we'll refund you in full. No interrogation, no hoops.</p>
+  <div class="hl">Every template includes a test mode that runs on dummy data with zero API cost —
+     so you can verify everything works <b>before</b> it touches anything real.</div>
+  <ul>
+    <li><b>How to request:</b> reply directly to your Gumroad receipt email, or email
+        <a href="mailto:support@matemplates.com?subject=Refund%20request">support@matemplates.com</a> with your Gumroad order number.</li>
+    <li><b>Processing:</b> refunds are issued through Gumroad back to your original payment method, usually within 5–10 business days depending on your bank.</li>
+    <li><b>Duplicate purchases or accidental orders:</b> always refunded — just ask.</li>
+    <li><b>What's not covered:</b> "I changed my mind" after more than 30 days, or refunds requested because your n8n instance, API accounts, or third-party services weren't set up (the docs cover all of that).</li>
+  </ul>
+</section>
+
+<section id="license">
+  <h2><span class="tag">License</span> What you can (and can't) do</h2>
+  <p>Buying a template grants you a <b>perpetual, commercial-use license</b> for one deployment
+     (your own project, or one client project).</p>
+  <ul>
+    <li><b>You may:</b> import, run, and freely modify the workflow; use it for client work; keep every future update (free re-downloads from your Gumroad library).</li>
+    <li><b>You may not:</b> resell, redistribute, or share the template files themselves — modified or not — as templates or as part of a competing template product.</li>
+    <li><b>Agencies running many client installs:</b> email us for a simple bulk arrangement instead of buying one copy per client.</li>
+    <li>The underlying open-source n8n platform remains under its own license (fair-code, sustainable-use) and is unrelated to your template purchase.</li>
+  </ul>
+</section>
+
+<section id="support">
+  <h2><span class="tag">Support</span> Included, not upsold</h2>
+  <p>Email <a href="mailto:support@matemplates.com?subject=Setup%20help">support@matemplates.com</a> with any setup question —
+     included with every purchase. You get answers from the person who built the template,
+     usually within one business day.</p>
+</section>
+
+<section id="privacy">
+  <h2><span class="tag">Privacy</span> Minimal by design</h2>
+  <ul>
+    <li>This site is static HTML — <b>no cookies, no analytics scripts, no trackers</b>.</li>
+    <li>Purchases and payments are handled entirely by <a href="https://gumroad.com/privacy">Gumroad</a>; we never see or store your card details.</li>
+    <li>We only ever see what Gumroad shares with sellers: your email address and order details — used exclusively for support and refunds.</li>
+    <li>We never sell, rent, share, or train AI models on customer information.</li>
+  </ul>
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/">← Back to templates</a></div>
+</footer>
+
+</div>
+</body>
+</html>
