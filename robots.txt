@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+Disallow: /carrd_embed.html
+
 Sitemap: https://matemplates.com/sitemap.xml
