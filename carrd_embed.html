@@ -1,0 +1,156 @@
+<div id="mtx">
+<style>
+#mtx{--bg:#0b1220;--bg2:#101a2e;--card:#131f36;--line:#22304d;--txt:#e8edf6;--mut:#9fb0c9;--acc:#ff7a00;--grn:#5ee98a;
+background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);color:var(--txt);
+font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.55;margin:0;padding:0;width:100%}
+#mtx *{margin:0;padding:0;box-sizing:border-box}
+#mtx .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+#mtx header{padding:26px 0;display:flex;align-items:center;justify-content:space-between}
+#mtx .logo{font-weight:800;font-size:20px;letter-spacing:.5px}
+#mtx .logo span{color:var(--acc)}
+#mtx .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+#mtx .nav a:hover{color:var(--txt)}
+#mtx .hero{text-align:center;padding:64px 0 44px}
+#mtx .hero h1{font-size:clamp(30px,5vw,46px);font-weight:800;line-height:1.15;color:#fff}
+#mtx .hero h1 em{color:var(--acc);font-style:normal}
+#mtx .hero p{color:var(--mut);max-width:640px;margin:16px auto 0;font-size:17px}
+#mtx .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+#mtx .badge{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mut)}
+#mtx .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;padding:28px 0 12px}
+#mtx .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s ease,border-color .15s ease}
+#mtx .card:hover{transform:translateY(-3px);border-color:#33456b}
+#mtx .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0a0f1c}
+#mtx .cbody{padding:20px;display:flex;flex-direction:column;flex:1}
+#mtx .kicker{font-size:11px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
+#mtx .card h2{font-size:19px;margin:8px 0;color:#fff}
+#mtx .card ul{list-style:none;margin:4px 0 14px}
+#mtx .card li{color:var(--mut);font-size:14px;padding:3px 0 3px 20px;position:relative}
+#mtx .card li:before{content:"✓";position:absolute;left:0;color:var(--grn);font-weight:700}
+#mtx .price-row{margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:14px;border-top:1px solid var(--line)}
+#mtx .price{font-size:24px;font-weight:800;color:#fff}
+#mtx .price small{font-size:12px;color:var(--mut);font-weight:400}
+#mtx .btn{display:inline-block;text-align:center;background:var(--acc);color:#14100a;font-weight:700;padding:11px 18px;border-radius:10px;text-decoration:none;font-size:14px;flex:1}
+#mtx .btn:hover{filter:brightness(1.08)}
+#mtx .btn.free{background:var(--grn)}
+#mtx .strip{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin:26px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+#mtx .strip div b{display:block;font-size:15px;margin-bottom:4px;color:#fff}
+#mtx .strip div span{color:var(--mut);font-size:13.5px}
+#mtx details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:10px 0}
+#mtx summary{cursor:pointer;font-weight:600;color:#fff}
+#mtx details p{color:var(--mut);margin-top:10px;font-size:14.5px}
+#mtx .faq{padding:26px 0 10px}
+#mtx .faq h2,#mtx .cta h2{font-size:24px;text-align:center;margin-bottom:18px;color:#fff}
+#mtx .cta{text-align:center;padding:40px 0 70px}
+#mtx .cta p{color:var(--mut);margin-bottom:22px}
+#mtx .cta .btn{display:inline-block;flex:none;padding:14px 34px;font-size:16px}
+#mtx footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#mtx footer a{color:var(--mut)}
+</style>
+<div class="wrap">
+<header>
+  <div class="logo">mate<span>mplates</span></div>
+  <nav class="nav">
+    <a href="#templates">Templates</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://matemplate.gumroad.com">Store ↗</a>
+  </nav>
+</header>
+<section class="hero">
+  <h1>n8n workflows that earn their keep.<br><em>Import. Plug in keys. Run.</em></h1>
+  <p>Production-grade automation templates with the boring parts done right — test modes, dry-run safety gates, dedupe, error handling, and docs that assume you have other things to do.</p>
+  <div class="badges">
+    <span class="badge">✓ Import-ready JSON</span>
+    <span class="badge">✓ Setup docs included</span>
+    <span class="badge">✓ Test mode — try before real runs</span>
+    <span class="badge">✓ 30-day satisfaction promise</span>
+  </div>
+</section>
+<section class="grid" id="templates">
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/real-estate-lead-enrichment.png" alt="Real Estate Lead Enrichment template cover">
+    <div class="cbody">
+      <div class="kicker">Best for wholesalers &amp; agents</div>
+      <h2>Real Estate Lead Enrichment</h2>
+      <ul>
+        <li>Scrape seller/buyer lists → enrich contacts automatically</li>
+        <li>AI scoring so you call the hottest leads first</li>
+        <li>Dedupe + straight into Google Sheets</li>
+        <li>Kill switch, dry-run gate &amp; Telegram alerts built in</li>
+      </ul>
+      <div class="price-row">
+        <div class="price">$24 <small>one-time</small></div>
+        <a class="btn" href="https://matemplate.gumroad.com/l/hbvkfq">Get it on Gumroad →</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png" alt="Gumroad Sales Notifier template cover">
+    <div class="cbody">
+      <div class="kicker">For digital-product sellers</div>
+      <h2>Gumroad Sales Notifier</h2>
+      <ul>
+        <li>Every sale → instant Telegram alert</li>
+        <li>Buyers get a welcome email automatically</li>
+        <li>Review request follows up 3 days later</li>
+        <li>Zero code — live in about 5 minutes</li>
+      </ul>
+      <div class="price-row">
+        <div class="price">$19 <small>one-time</small></div>
+        <a class="btn" href="https://matemplate.gumroad.com/l/baqzzf">Get it on Gumroad →</a>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/free-lead-sampler.png" alt="Free lead enrichment sampler cover">
+    <div class="cbody">
+      <div class="kicker">Try before you buy</div>
+      <h2>Lead Enrichment Sampler</h2>
+      <ul>
+        <li>The full pipeline on 2 dummy leads</li>
+        <li>No API keys required — import and run</li>
+        <li>See exactly how the paid template works</li>
+        <li>Free forever</li>
+      </ul>
+      <div class="price-row">
+        <div class="price">$0</div>
+        <a class="btn free" href="https://matemplate.gumroad.com/l/iyjtcg">Download free →</a>
+      </div>
+    </div>
+  </article>
+</section>
+<section class="strip">
+  <div><b>🧩 Built for n8n 2.x</b><span>Tested on current self-hosted n8n. Single-output Code nodes throughout — no fragile multi-branch imports.</span></div>
+  <div><b>🛡️ Safe by design</b><span>Test mode with dummy data, dry-run gates before any external write, kill switches. Your first run can't break anything.</span></div>
+  <div><b>📄 Real documentation</b><span>Every parameter explained, troubleshooting included, setup from zero in under 15 minutes.</span></div>
+  <div><b>💬 Human support</b><span>Stuck on setup? Email me — included with every purchase, not an upsell.</span></div>
+</section>
+<section class="faq" id="faq">
+  <h2>Questions, answered</h2>
+  <details>
+    <summary>What is n8n, and do I need my own instance?</summary>
+    <p>n8n is a free, open-source workflow automation tool (self-hosted, or their cloud plan). You'll need a working n8n instance to import these templates — self-hosted or n8n Cloud both work.</p>
+  </details>
+  <details>
+    <summary>What exactly do I get after buying?</summary>
+    <p>An import-ready workflow JSON file, a README with step-by-step setup (including where each API key goes), and support by email if anything doesn't work as described.</p>
+  </details>
+  <details>
+    <summary>Are there running costs?</summary>
+    <p>n8n itself is free self-hosted. The lead enrichment template uses Apify for scraping (free tier available) and optional lookup APIs — costs are usage-based and documented in the README so there are no surprises.</p>
+  </details>
+  <details>
+    <summary>What if it doesn't work for me?</summary>
+    <p>Every template has a test mode that runs on dummy data with zero API cost. If it doesn't do what the page says, email within 30 days for a full refund — no questions asked.</p>
+  </details>
+</section>
+<section class="cta">
+  <h2>Stop rebuilding the same workflows.</h2>
+  <p>Grab a template, import it, and get your evening back.</p>
+  <a class="btn" href="https://matemplate.gumroad.com">Browse the store →</a>
+</section>
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="https://matemplate.gumroad.com">Gumroad store ↗</a> · [EMAIL]</div>
+</footer>
+</div>
+</div>
