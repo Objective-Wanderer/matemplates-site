@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice & Late-Payment Follow-up n8n Workflow — Auto-Chase Overdue Invoices</title>
+<meta name="description" content="Import-ready n8n workflow that checks your invoice sheet daily, sends gentle/firm/final reminders automatically, logs every send, and pings you on Telegram. Dry-run mode included. $19 one-time.">
+<link rel="canonical" href="https://matemplates.com/templates/invoice-followup.html">
+<meta property="og:title" content="Invoice & Late-Payment Follow-up n8n Workflow">
+<meta property="og:description" content="Chase overdue invoices on autopilot — gentle, firm, final reminders with a Sheets log and Telegram digest. Import-ready n8n template.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{
+    --bg:#070d18; --bg2:#0c1526; --card:#101b30; --card2:#14203a; --line:#22304d; --line2:#2e4066;
+    --txt:#eef3fb; --mut:#9fb0c9; --mut2:#7e90ad; --acc:#ff7a00; --acc2:#ffa14d; --grn:#5ee98a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);
+       font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.55}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;
+         background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .nav .navcta:hover{color:#14100a;filter:brightness(1.08)}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero{text-align:center;padding:64px 0 36px}
+  .hero h1{font-size:clamp(28px,4.6vw,44px);font-weight:800;line-height:1.14;margin-top:14px}
+  .hero h1 em{color:var(--acc);font-style:normal}
+  .hero p{color:var(--mut);max-width:680px;margin:18px auto 0;font-size:17px}
+  .herocta{display:flex;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+  .btn{display:inline-block;text-align:center;background:var(--acc);color:#14100a;font-weight:700;
+       padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px;border:none;cursor:pointer}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line2)}
+  .btn.ghost:hover{border-color:var(--acc);color:var(--acc2)}
+  .btn.free{background:var(--grn)}
+  .secthead{text-align:center;padding:52px 0 8px}
+  .secthead h2{font-size:clamp(24px,3.4vw,32px);margin-top:12px}
+  .secthead p{color:var(--mut);max-width:640px;margin:10px auto 0;font-size:15.5px}
+  .featgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;padding:26px 0 10px}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .feat .ico{font-size:26px}
+  .feat h3{font-size:16.5px;margin:10px 0 6px}
+  .feat p{color:var(--mut);font-size:14px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;padding:24px 0 10px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .step .n{font-size:13px;font-weight:800;color:var(--acc);letter-spacing:1px}
+  .step h3{font-size:17px;margin:8px 0 6px}
+  .step p{color:var(--mut);font-size:14px}
+  .getlist{max-width:760px;margin:18px auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 30px}
+  .getlist li{color:var(--mut);font-size:15px;padding:6px 0 6px 26px;position:relative;list-style:none}
+  .getlist li:before{content:"✓";position:absolute;left:0;color:var(--grn);font-weight:700}
+  .faq{padding:26px 0 10px;max-width:820px;margin:0 auto}
+  .faq h2{font-size:clamp(24px,3.4vw,30px);text-align:center;margin-bottom:18px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:10px 0}
+  details[open]{border-color:var(--line2)}
+  summary{cursor:pointer;font-weight:600}
+  details p{color:var(--mut);margin-top:10px;font-size:14.5px}
+  .cta{text-align:center;padding:46px 0 30px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+            border-radius:18px;padding:44px 26px}
+  .cta p{color:var(--mut);margin-bottom:24px}
+  .cta .btn{padding:14px 34px;font-size:16px}
+  .cta .mini{font-size:12.5px;color:var(--mut2);margin-top:14px}
+  .price-tag{display:inline-block;font-size:24px;font-weight:800;color:var(--acc);margin-bottom:6px}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:40px;
+         display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+  @media(max-width:640px){.nav a:not(.navcta){display:none}.hero{padding:48px 0 28px}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Invoice & Late-Payment Follow-up n8n Workflow",
+  "description": "Import-ready n8n workflow that checks your invoice sheet daily, sends gentle/firm/final reminders automatically, logs every send, and pings you on Telegram. Dry-run mode included.",
+  "brand": {"@type": "Brand", "name": "Matemplates"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png",
+  "offers": {"@type": "Offer", "price": "19.00", "priceCurrency": "USD", "url": "https://matemplate.gumroad.com/l/iwayt", "availability": "https://schema.org/InStock"}
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav">
+    <a href="/#features">Why us</a>
+    <a href="/#templates">Templates</a>
+    <a href="/#compare">Compare</a>
+    <a href="/#faq">FAQ</a>
+    <a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Small-business automation</div>
+  <h1>Stop chasing clients for <em>overdue invoices</em></h1>
+  <p>An import-ready n8n workflow that checks your invoice sheet every morning, picks the
+     right reminder tone by how overdue each invoice is, and sends it — logging every send
+     and pinging you on Telegram. No code. Dry-run mode included.</p>
+  <div class="herocta">
+    <a class="btn" href="https://matemplate.gumroad.com/l/iwayt">Get it on Gumroad →</a>
+    <a class="btn ghost" href="https://matemplate.gumroad.com/l/iyjtcg">Try the free sampler</a>
+  </div>
+</section>
+
+<section id="features">
+  <div class="secthead">
+    <div class="kicker">What it does</div>
+    <h2>From scattered leads to a ranked pipeline</h2>
+    <p>Every operational detail is already handled — you plug in keys and run.</p>
+  </div>
+  <div class="featgrid">
+    <div class="feat"><div class="ico">🗓️</div><h3>Daily check</h3><p>Runs every morning, scans your invoice sheet, and only acts on unpaid, past-due rows.</p></div>
+    <div class="feat"><div class="ico">📨</div><h3>Tone by overdue</h3><p>Gentle at 1 day, firm at 7, final notice at 14 — the right nudge at the right time.</p></div>
+    <div class="feat"><div class="ico">📊</div><h3>Sheets log</h3><p>Every reminder is appended to a log tab, so you have a paper trail and no silent duplicates.</p></div>
+    <div class="feat"><div class="ico">🔔</div><h3>Telegram digest</h3><p>Get one summary each morning of what was sent — see it without opening a dashboard.</p></div>
+    <div class="feat"><div class="ico">🛡️</div><h3>Dry-run mode</h3><p>Flip one switch and run a full pass with zero emails sent. Your first real run can't embarrass you.</p></div>
+    <div class="feat"><div class="ico">⚙️</div><h3>$0 running cost</h3><p>Gmail SMTP + Google Sheets + Telegram are all free. Self-hosted n8n is free too.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="secthead">
+    <div class="kicker">How it works</div>
+    <h2>Live in about 15 minutes</h2>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="n">STEP 1</div><h3>Import the JSON</h3><p>Download from Gumroad, drag into your n8n instance. One minute, no node-wiring.</p></div>
+    <div class="step"><div class="n">STEP 2</div><h3>Plug in keys</h3><p>The README points at every field — Google Sheets, Gmail SMTP, Telegram, your sheet id.</p></div>
+    <div class="step"><div class="n">STEP 3</div><h3>Run dry-run</h3><p>Validate on dummy rows, then flip to live. Overdue reminders start going out on schedule.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="secthead">
+    <div class="kicker">What you get</div>
+    <h2>Everything in the box</h2>
+  </div>
+  <ul class="getlist">
+    <li>Import-ready workflow JSON (n8n 2.x)</li>
+    <li>Step-by-step README — setup from zero in under 15 minutes</li>
+    <li>Dry-run mode — full pass with zero emails sent</li>
+    <li>Gentle / firm / final reminder logic (edit the wording)</li>
+    <li>Google Sheets read + append-log nodes</li>
+    <li>Telegram daily-digest node</li>
+    <li>Free updates forever — re-download from your Gumroad library</li>
+    <li>Human support included — email the person who built it</li>
+  </ul>
+</section>
+
+<section class="faq">
+  <h2>Questions, answered</h2>
+  <details>
+    <summary>Do I need to know how to code?</summary>
+    <p>No. Import the JSON, paste your API keys where the README tells you, and run. The workflow is pre-built — you're configuring, not coding.</p>
+  </details>
+  <details>
+    <summary>What email does it send?</summary>
+    <p>Three tones by how overdue the invoice is: a friendly reminder at 1 day, a firmer nudge at 7, and a final notice at 14. All copy is editable in the workflow.</p>
+  </details>
+  <details>
+    <summary>Can I use this for client work?</summary>
+    <p>Yes — agencies and freelancers deploy it for clients all the time. One license per deployment; email for bulk arrangements.</p>
+  </details>
+  <details>
+    <summary>What if it doesn't fit my invoicing?</summary>
+    <p>Every template ships with dry-run mode on dummy data and a 30-day satisfaction promise. If it doesn't do what the page says, email within 30 days for a full refund.</p>
+  </details>
+</section>
+
+<section class="cta">
+  <div class="box">
+    <div class="price-tag">$19</div><div style="color:var(--mut);font-size:14px">one-time · free updates forever</div>
+    <h2>Get paid on time, automatically.</h2>
+    <p>Import the workflow, plug in your keys, and let overdue invoices chase themselves.</p>
+    <a class="btn" href="https://matemplate.gumroad.com/l/iwayt">Get Invoice & Late-Payment Follow-up →</a>
+    <div class="mini">or <a href="https://matemplate.gumroad.com/l/iyjtcg" style="color:var(--acc)">try the free sampler first</a></div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> · <a href="/templates/invoice-followup.html">Invoice Follow-up</a> · <a href="/templates/cold-outreach.html">Cold Outreach</a> · <a href="/templates/support-triage.html">Support Triage</a> · <a href="/#templates">All templates</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
