@@ -57,6 +57,19 @@
              font-size:22px;line-height:1;border-radius:8px;padding:4px 11px;cursor:pointer;margin-left:12px}
   .nav a.active{color:var(--acc)}
   .nav a.active:hover{color:var(--acc)}
+  @media(max-width:640px){
+    header{position:relative}
+    .nav{display:none;position:absolute;top:60px;right:14px;flex-direction:column;
+         background:var(--card);border:1px solid var(--line);border-radius:12px;
+         padding:10px 14px;gap:4px;min-width:172px;z-index:60}
+    .nav.open{display:flex}
+    .nav a{margin:0;padding:9px 4px;font-size:15px}
+    .nav .navcta{padding:9px 14px;text-align:center}
+    .navtoggle{display:block}
+    .hero{padding:48px 0 28px}
+    .cover{max-height:200px}
+    .card img{height:auto}
+  }
 </style>
 <script type="application/ld+json">
 {
