@@ -49,5 +49,12 @@
     <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
     <description>A teardown of the flagship real-estate lead enrichment workflow: scrape, AI-score, dedupe, and route hot leads to Telegram — with a test mode that runs on dummy data first.</description>
   </item>
+  <item>
+    <title>Self-Test Post (delete me)</title>
+    <link>https://matemplates.com/blog/selftest-pipeline.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/selftest-pipeline.html</guid>
+    <pubDate>Sat, 29 Aug 2026 17:09:26 +0000</pubDate>
+    <description>Pipeline self-test</description>
+  </item>
 </channel>
 </rss>
