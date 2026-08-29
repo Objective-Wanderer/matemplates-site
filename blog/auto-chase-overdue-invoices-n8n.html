@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)</title>
+<meta name="description" content="A polite, staged dunning sequence built in n8n: gentle at day 1, firm at day 7, final at day 14 — with dry-run mode so your first pass sends zero real emails. Step-by-step for solopreneurs.">
+<meta name="keywords" content="n8n invoice follow up, auto chase overdue invoices, n8n google sheets email, late payment reminder automation, dunning sequence n8n, freelance invoice automation">
+<link rel="canonical" href="https://matemplates.com/blog/auto-chase-overdue-invoices-n8n.html">
+<meta property="og:title" content="How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)">
+<meta property="og:description" content="A polite, staged dunning sequence built in n8n: gentle at day 1, firm at day 7, final at day 14 — with dry-run mode.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/auto-chase-overdue-invoices-n8n.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)">
+<meta name="twitter:description" content="A polite, staged dunning sequence built in n8n: gentle at day 1, firm at day 7, final at day 14.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)",
+  "datePublished": "2026-08-29",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png",
+  "description": "A polite, staged dunning sequence built in n8n: gentle at day 1, firm at day 7, final at day 14 — with dry-run mode so your first pass sends zero real emails.",
+  "mainEntityOfPage": "https://matemplates.com/blog/auto-chase-overdue-invoices-n8n.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Get paid</div>
+  <h1>How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)</h1>
+  <div class="meta">Aug 29, 2026 · 7 min read</div>
+  <p class="lede">Chasing late payments is the worst part of freelancing — but doing it badly loses the client. Here's a staged, polite dunning
+     sequence you can build in n8n in an afternoon, with a dry-run mode so your first pass sends zero real emails.</p>
+</section>
+
+<article>
+  <h2>Why a staged sequence beats one angry email</h2>
+  <p>A single "PAY NOW" at day 30 burns the relationship. A gentle nudge at day 1, a firmer one at day 7, and a final notice at day 14
+     gets you paid <em>and</em> keeps the door open. The trick is automating the timing so you never have to remember — or resent — it.</p>
+
+  <h2>The data model: one Google Sheet</h2>
+  <p>Keep invoices in a sheet with columns: <code>client_email</code>, <code>client_name</code>, <code>amount</code>, <code>due_date</code>,
+     <code>status</code>, <code>last_reminder</code>. n8n reads it daily, computes days overdue, and picks the right message.</p>
+  <ul>
+    <li><strong>Day 1 overdue:</strong> "Hi {name}, just a friendly flag — invoice #X for {amount} was due. Whenever's convenient."</li>
+    <li><strong>Day 7:</strong> "Following up on the open invoice — here's the link to pay. Anything blocking it?"</li>
+    <li><strong>Day 14:</strong> "Final reminder before we pause work / escalate. Happy to jump on a call if needed."</li>
+  </ul>
+
+  <h2>The n8n flow, node by node</h2>
+  <ul>
+    <li><strong>Schedule trigger</strong> — daily at 09:00.</li>
+    <li><strong>Google Sheets → Get rows</strong> — filter to <code>status = open</code>.</li>
+    <li><strong>Function/Code node</strong> — compute <code>days_overdue</code>, choose template, set <code>next_action</code>.</li>
+    <li><strong>IF node</strong> — only continue if a reminder is actually due (avoid spamming).</li>
+    <li><strong>Send email</strong> — Gmail / SMTP node with the staged copy.</li>
+    <li><strong>Update row</strong> — write <code>last_reminder</code> + bump <code>status</code> if final.</li>
+    <li><strong>Telegram digest</strong> — a morning summary of who got nudged.</li>
+  </ul>
+
+  <div class="card">
+    <h3>Steal it → Invoice &amp; Late-Payment Follow-up</h3>
+    <p>The import-ready template has the staged copy, the date math, and a <strong>dry-run mode</strong> that logs every would-be email
+       without sending. Test on dummy rows first.
+       <a href="/templates/invoice-followup.html">Full breakdown →</a></p>
+  </div>
+
+  <h2>The dry-run rule</h2>
+  <p>Before any automation touches a real client, flip it to test mode and watch the logs. If the day-14 "final notice" fires on a
+     paid invoice because a column was off, you've just apologized to your best customer. Dry-run turns that risk into a 2-minute check.</p>
+
+  <h2>Result</h2>
+  <p>Most late invoices clear within 48 hours of the first gentle nudge — because the nudge actually goes out, on time, every time.
+     You stop being the collector and start being the business.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Get the workflow, not the lecture</h2>
+    <p>The Invoice &amp; Late-Payment Follow-up template imports into your n8n, runs on a free instance, and ships with dry-run mode.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Grab it →</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> · <a href="/#templates">Templates</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

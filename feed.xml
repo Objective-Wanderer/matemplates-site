@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Matemplates Blog — n8n Automations &amp; Workflow Builds</title>
+  <link>https://matemplates.com/blog/</link>
+  <description>Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, support triage, and lead enrichment — with real workflow teardowns.</description>
+  <language>en</language>
+  <lastBuildDate>Sat, 29 Aug 2026 12:00:00 +0000</lastBuildDate>
+  <atom:link href="https://matemplates.com/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>5 n8n Automations Every Solopreneur Should Steal in 2026</title>
+    <link>https://matemplates.com/blog/solopreneur-n8n-automations.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/solopreneur-n8n-automations.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>The five n8n workflows that quietly run a one-person business: support triage, invoice chasing, sale alerts, cold outreach, and lead enrichment — what each does and where to start.</description>
+  </item>
+  <item>
+    <title>Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes</title>
+    <link>https://matemplates.com/blog/gumroad-sale-telegram-alert.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/gumroad-sale-telegram-alert.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>A step-by-step build of a Gumroad webhook to Telegram sale alert, plus the auto-welcome email and review follow-up that turn one-time buyers into repeat ones.</description>
+  </item>
+  <item>
+    <title>Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)</title>
+    <link>https://matemplates.com/blog/cold-outreach-that-converts.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/cold-outreach-that-converts.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>How to turn a flat lead sheet into personalized, throttled emails that protect your domain — rule-based with zero API cost, with an LLM swap-in when you want it.</description>
+  </item>
+  <item>
+    <title>n8n vs Zapier for Solopreneurs: The Real Pricing &amp; Control Trade-off</title>
+    <link>https://matemplates.com/blog/n8n-vs-zapier-solopreneur.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-vs-zapier-solopreneur.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>Where Zapier's per-task pricing quietly breaks a solopreneur budget, and why self-hosting n8n changes the math — without the hype.</description>
+  </item>
+  <item>
+    <title>How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)</title>
+    <link>https://matemplates.com/blog/auto-chase-overdue-invoices-n8n.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/auto-chase-overdue-invoices-n8n.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>A polite, staged dunning sequence built in n8n: gentle at day 1, firm at day 7, final at day 14 — with dry-run mode so your first pass sends zero real emails.</description>
+  </item>
+  <item>
+    <title>How We Built a Real Estate Lead Scraper &amp; AI Scorer in n8n</title>
+    <link>https://matemplates.com/blog/real-estate-lead-enrichment-n8n.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/real-estate-lead-enrichment-n8n.html</guid>
+    <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
+    <description>A teardown of the flagship real-estate lead enrichment workflow: scrape, AI-score, dedupe, and route hot leads to Telegram — with a test mode that runs on dummy data first.</description>
+  </item>
+</channel>
+</rss>
