@@ -121,7 +121,7 @@
     .nav.open{display:flex}
     .nav a{margin:0;padding:9px 4px;font-size:15px}
     .nav .navcta{padding:9px 14px;text-align:center}
-    .navtoggle{display:block}
+    .navtoggle{display:flex}
     .hero{padding:48px 0 28px}
     .cover{max-height:200px}
     .card img{height:auto}
@@ -132,7 +132,7 @@
     .nav.open{display:flex}
     .nav a{margin:0;padding:9px 4px;font-size:15px}
     .nav .navcta{padding:9px 14px;text-align:center}
-    .navtoggle{display:block}
+    .navtoggle{display:flex}
     .hero{padding:48px 0 28px}
     .cover{max-height:200px}
     .card img{height:auto}
@@ -141,8 +141,9 @@
     .card img{}
   }
 
-  .navtoggle{display:none;background:none;border:1px solid var(--line2);color:var(--txt);
-             font-size:22px;line-height:1;border-radius:8px;padding:4px 11px;cursor:pointer;margin-left:12px}
+  .navtoggle{display:none;background:none;border:none;margin-left:12px;padding:6px 2px;cursor:pointer;
+             flex-direction:column;justify-content:center;gap:5px}
+  .navtoggle span{display:block;width:26px;height:3px;background:var(--acc);border-radius:2px}
   .nav a.active{color:var(--acc)}
   .nav a.active:hover{color:var(--acc)}
 </style>
@@ -190,7 +191,7 @@
 
 <header>
   <a class="logo" href="/">mate<span>mplates</span></a>
-  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)">☰</button>
+  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)"><span></span><span></span><span></span></button>
   <nav class="nav">
     <a href="/#templates" class="active">Templates</a>
     <a href="/blog/">Blog</a>
