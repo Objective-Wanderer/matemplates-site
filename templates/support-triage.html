@@ -82,6 +82,11 @@
          display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   footer a{color:var(--mut)}
   @media(max-width:640px){.nav a:not(.navcta){display:none}.hero{padding:48px 0 28px}.cover{max-height:200px}}
+
+  .navtoggle{display:none;background:none;border:1px solid var(--line2);color:var(--txt);
+             font-size:22px;line-height:1;border-radius:8px;padding:4px 11px;cursor:pointer;margin-left:12px}
+  .nav a.active{color:var(--acc)}
+  .nav a.active:hover{color:var(--acc)}
 </style>
 <script type="application/ld+json">
 {
@@ -100,10 +105,10 @@
 
 <header>
   <a class="logo" href="/">mate<span>mplates</span></a>
+  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)">☰</button>
   <nav class="nav">
-    <a href="/#features">Why us</a>
     <a href="/#templates">Templates</a>
-    <a href="/#compare">Compare</a>
+    <a href="/blog/">Blog</a>
     <a href="/#faq">FAQ</a>
     <a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a>
   </nav>
@@ -203,7 +208,7 @@
 
 <footer>
   <div>© 2026 Matemplates · n8n workflow templates</div>
-  <div><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> · <a href="/templates/invoice-followup.html">Invoice Follow-up</a> · <a href="/templates/cold-outreach.html">Cold Outreach</a> · <a href="/templates/support-triage.html">Support Triage</a> · <a href="/#templates">All templates</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+  <div><a href="/blog/">Blog</a> · <a href="https://matemplate.gumroad.com">Store ↗</a> · <a href="/policies.html">Policies</a> · <a href="/feed.xml" type="application/rss+xml">RSS Feed</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
 </footer>
 
 </div>

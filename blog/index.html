@@ -64,6 +64,11 @@
     .hero{padding:48px 0 28px}
     .card img{}
   }
+
+  .navtoggle{display:none;background:none;border:1px solid var(--line2);color:var(--txt);
+             font-size:22px;line-height:1;border-radius:8px;padding:4px 11px;cursor:pointer;margin-left:12px}
+  .nav a.active{color:var(--acc)}
+  .nav a.active:hover{color:var(--acc)}
 </style>
 <script type="application/ld+json">
 {
@@ -89,8 +94,8 @@
 
 <header>
   <a class="logo" href="/">mate<span>mplates</span></a>
+  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)">☰</button>
   <nav class="nav">
-    <a href="/#features">Why us</a>
     <a href="/#templates">Templates</a>
     <a href="/blog/">Blog</a>
     <a href="/#faq">FAQ</a>
@@ -108,7 +113,7 @@
 <section class="grid">
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/starter-pack.png" alt="Solopreneur automations cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/solopreneur-n8n-automations.png" alt="Solopreneur automations cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Solopreneur ops</div>
       <h2>5 n8n Automations Every Solopreneur Should Steal in 2026</h2>
@@ -119,7 +124,7 @@
   </article>
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png" alt="Gumroad sales notifier cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sale-telegram-alert.png" alt="Gumroad sales notifier cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Gumroad sellers</div>
       <h2>Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes</h2>
@@ -130,7 +135,7 @@
   </article>
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach.png" alt="Cold outreach cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach-that-converts.png" alt="Cold outreach cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Outreach</div>
       <h2>Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)</h2>
@@ -141,7 +146,7 @@
   </article>
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/real-estate-lead-enrichment.png" alt="Real estate lead enrichment cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/real-estate-lead-enrichment-n8n.png" alt="Real estate lead enrichment cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Workflow teardown</div>
       <h2>How We Built a Real Estate Lead Scraper &amp; AI Scorer in n8n</h2>
@@ -152,7 +157,7 @@
   </article>
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/invoice-followup.png" alt="Invoice follow-up cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/auto-chase-overdue-invoices-n8n.png" alt="Invoice follow-up cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Get paid</div>
       <h2>How to Auto-Chase Overdue Invoices with n8n (Without Losing Clients)</h2>
@@ -163,7 +168,7 @@
   </article>
 
   <article class="card">
-    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/automation-club.png" alt="n8n vs zapier cover" width="1280" height="720">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-vs-zapier-solopreneur.png" alt="n8n vs zapier cover" width="1280" height="720">
     <div class="cbody">
       <div class="kicker">Tooling</div>
       <h2>n8n vs Zapier for Solopreneurs: The Real Pricing &amp; Control Trade-off</h2>
@@ -177,7 +182,7 @@
 
 <footer>
   <div>© 2026 Matemplates · n8n workflow templates</div>
-  <div><a href="/blog/">Blog</a> · <a href="/feed.xml" type="application/rss+xml">RSS</a> · <a href="/#templates">Templates</a> · <a href="https://matemplate.gumroad.com">Store ↗</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+  <div><a href="/blog/">Blog</a> · <a href="https://matemplate.gumroad.com">Store ↗</a> · <a href="/policies.html">Policies</a> · <a href="/feed.xml" type="application/rss+xml">RSS Feed</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
 </footer>
 
 </div>
