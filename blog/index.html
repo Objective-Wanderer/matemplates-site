@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matemplates Blog — n8n Automation Tips, Teardowns & Workflow Builds</title>
+<meta name="description" content="Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, and support triage — with real workflow teardowns.">
+<meta name="keywords" content="n8n blog, n8n automation guide, workflow automation tutorial, n8n teardown, solopreneur automation">
+<link rel="canonical" href="https://matemplates.com/blog/">
+<meta property="og:title" content="Matemplates Blog — n8n Automation Tips, Teardowns & Workflow Builds">
+<meta property="og:description" content="Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, and support triage.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://matemplates.com/blog/">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/real-estate-lead-enrichment.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Matemplates Blog — n8n Automation Tips, Teardowns & Workflow Builds">
+<meta name="twitter:description" content="Practical n8n automation guides for solopreneurs and small teams.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/real-estate-lead-enrichment.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{
+    --bg:#070d18; --bg2:#0c1526; --card:#101b30; --card2:#14203a; --line:#22304d; --line2:#2e4066;
+    --txt:#eef3fb; --mut:#9fb0c9; --mut2:#7e90ad; --acc:#ff7a00; --acc2:#ffa14d; --grn:#5ee98a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);
+       font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.55}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;
+         background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .nav .navcta:hover{color:#14100a;filter:brightness(1.08)}
+  .hero{text-align:center;padding:64px 0 36px}
+  .hero h1{font-size:clamp(28px,4.6vw,44px);font-weight:800;line-height:1.14;margin-top:14px}
+  .hero h1 em{color:var(--acc);font-style:normal}
+  .hero p{color:var(--mut);max-width:680px;margin:18px auto 0;font-size:17px}
+  .secthead{text-align:center;padding:40px 0 8px}
+  .secthead h2{font-size:clamp(24px,3.4vw,32px);margin-top:12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;padding:26px 0 12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+        transition:transform .15s ease,border-color .15s ease}
+  .card:hover{transform:translateY(-3px);border-color:#33456b}
+  .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0a0f1c}
+  .cbody{padding:22px;display:flex;flex-direction:column;flex:1}
+  .card .kicker{font-size:11px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .card h2{font-size:20px;margin:8px 0 10px;line-height:1.25}
+  .card p{color:var(--mut);font-size:14.5px;flex:1}
+  .card .meta{color:var(--mut2);font-size:12.5px;margin-top:14px}
+  .card .btn{margin-top:14px;display:inline-block;text-align:center;background:var(--acc);color:#14100a;font-weight:700;
+       padding:11px 18px;border-radius:10px;text-decoration:none;font-size:14px}
+  .card .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:40px;
+         display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+  @media(max-width:640px){.nav a:not(.navcta){display:none}.hero{padding:48px 0 28px}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Matemplates Blog",
+  "url": "https://matemplates.com/blog/",
+  "description": "Practical n8n automation guides for solopreneurs and small teams.",
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "blogPost": [
+    {"@type": "BlogPosting", "headline": "5 n8n Automations Every Solopreneur Should Steal in 2026", "url": "https://matemplates.com/blog/solopreneur-n8n-automations.html", "datePublished": "2026-08-29"},
+    {"@type": "BlogPosting", "headline": "Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes", "url": "https://matemplates.com/blog/gumroad-sale-telegram-alert.html", "datePublished": "2026-08-29"},
+    {"@type": "BlogPosting", "headline": "Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)", "url": "https://matemplates.com/blog/cold-outreach-that-converts.html", "datePublished": "2026-08-29"}
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav">
+    <a href="/#features">Why us</a>
+    <a href="/#templates">Templates</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#faq">FAQ</a>
+    <a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Matemplates Blog</div>
+  <h1>n8n automations you can <em>actually ship</em></h1>
+  <p>Teardowns, build notes, and ready-to-steal workflow ideas for solopreneurs and small teams.
+     Every post links to a template you can import and run the same day.</p>
+</section>
+
+<section class="grid">
+
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/support-triage.png" alt="Support triage cover" width="1280" height="720">
+    <div class="cbody">
+      <div class="kicker">Solopreneur ops</div>
+      <h2>5 n8n Automations Every Solopreneur Should Steal in 2026</h2>
+      <p>The five workflows that quietly run a one-person business: support triage, invoice chasing, sale alerts, outreach, and lead enrichment — what each does and where to start.</p>
+      <div class="meta">Aug 29, 2026 · 7 min read</div>
+      <a class="btn" href="/blog/solopreneur-n8n-automations.html">Read the post →</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png" alt="Gumroad sales notifier cover" width="1280" height="720">
+    <div class="cbody">
+      <div class="kicker">Gumroad sellers</div>
+      <h2>Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes</h2>
+      <p>A step-by-step build of a Gumroad webhook → Telegram sale alert, plus the auto-welcome email and review follow-up that turn one-time buyers into repeat ones.</p>
+      <div class="meta">Aug 29, 2026 · 6 min read</div>
+      <a class="btn" href="/blog/gumroad-sale-telegram-alert.html">Read the post →</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach.png" alt="Cold outreach cover" width="1280" height="720">
+    <div class="cbody">
+      <div class="kicker">Outreach</div>
+      <h2>Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)</h2>
+      <p>How to turn a flat lead sheet into personalized, throttled emails that protect your domain — rule-based (zero API cost) with an LLM swap-in when you want it.</p>
+      <div class="meta">Aug 29, 2026 · 8 min read</div>
+      <a class="btn" href="/blog/cold-outreach-that-converts.html">Read the post →</a>
+    </div>
+  </article>
+
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> · <a href="/#templates">Templates</a> · <a href="https://matemplate.gumroad.com">Store ↗</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

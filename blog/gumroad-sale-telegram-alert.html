@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes</title>
+<meta name="description" content="A step-by-step n8n build of a Gumroad webhook to Telegram sale alert, plus the auto-welcome email and review follow-up that turn one-time buyers into repeat ones.">
+<meta name="keywords" content="gumroad telegram alert, gumroad webhook n8n, n8n sale notification, gumroad review follow-up, gumroad automation">
+<link rel="canonical" href="https://matemplates.com/blog/gumroad-sale-telegram-alert.html">
+<meta property="og:title" content="Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes">
+<meta property="og:description" content="A step-by-step n8n build of a Gumroad webhook to Telegram sale alert, plus the auto-welcome email and review follow-up.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/gumroad-sale-telegram-alert.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes">
+<meta name="twitter:description" content="A step-by-step n8n build of a Gumroad webhook to Telegram sale alert.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ol{color:var(--mut);margin:12px 0 12px 24px;font-size:16px}
+  article li{margin:8px 0}
+  article code{background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:14px;color:var(--grn)}
+  article a{color:var(--acc);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes",
+  "datePublished": "2026-08-29",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png",
+  "description": "A step-by-step n8n build of a Gumroad webhook to Telegram sale alert, plus the auto-welcome email and review follow-up.",
+  "mainEntityOfPage": "https://matemplates.com/blog/gumroad-sale-telegram-alert.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Gumroad sellers</div>
+  <h1>Never Miss a Gumroad Sale: Build a Telegram Alert in 5 Minutes</h1>
+  <div class="meta">Aug 29, 2026 · 6 min read</div>
+  <p class="lede">Gumroad tells you about sales by email — which you'll read later, next to twelve other emails. A Telegram alert
+     lands where your eyes already are. Here's the whole build, and the two follow-up steps that turn a sale into a repeater.</p>
+</section>
+
+<article>
+  <h2>The shape of it</h2>
+  <p>Three moving parts: a Gumroad <strong>webhook</strong> (fires on each sale), an n8n workflow that formats the message,
+     and a Telegram <strong>send-message</strong> node. No polling, no missed orders, no cron.</p>
+
+  <h2>Step 1 — Catch the webhook</h2>
+  <p>In Gumroad, open the product → <em>Analytics & webhooks</em> → add a webhook URL pointing at your n8n
+     <code>Webhook</code> node (set to POST). Gumroad posts a JSON payload with the sale: product name, price, buyer email,
+     and a per-sale token. n8n receives it the instant the sale clears.</p>
+
+  <h2>Step 2 — Format a clean alert</h2>
+  <p>A <code>Set</code> or small <code>Code</code> node turns the raw payload into one line:</p>
+  <p><code>💰 Sale: {product} — ${price} from {buyer}</code></p>
+  <p>Keep it short. The point is a glanceable ping, not a receipt.</p>
+
+  <h2>Step 3 — Send to Telegram</h2>
+  <p>Add a Telegram <code>sendMessage</code> node with your chat ID. Test it with a fake sale from Gumroad's webhook tester
+     before you go live. That's the alert done — under five minutes of real work.</p>
+
+  <h2>Step 4 — The follow-ups that matter more</h2>
+  <p>The alert is the fun part. The money is in what comes next:</p>
+  <ol>
+    <li><strong>Auto-welcome email</strong> — buyer gets a warm "where to start" note within a minute of buying. Sets the tone.</li>
+    <li><strong>Review follow-up at day 3</strong> — a polite nudge for a review while the purchase is still fresh. Gumroad's
+        discovery favors products with reviews, so this compounds.</li>
+  </ol>
+
+  <div class="card">
+    <h3>Skip the build → Gumroad Sales Notifier</h3>
+    <p>The import-ready template ships all three: the webhook, the Telegram alert, the welcome email, and the 3-day review nudge —
+       with test mode so you can fire a dummy sale end-to-end first.
+       <a href="/templates/gumroad-sales-notifier.html">Full breakdown →</a></p>
+  </div>
+
+  <h2>Why this compounds</h2>
+  <p>Every sale alert is a tiny dopamine hit that keeps you shipping. Every welcome + review nudge is a quiet lift in conversion
+     and discovery ranking. None of it takes willpower once it's wired. That's the whole game with solo selling — remove the lag
+     between the event and your awareness of it.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Rather import than wire?</h2>
+    <p>Grab the Gumroad Sales Notifier — webhook, Telegram alert, welcome email, and review follow-up, live in about 5 minutes.</p>
+    <a class="btn" href="https://matemplate.gumroad.com/l/baqzzf">Get the notifier →</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> · <a href="/templates/gumroad-sales-notifier.html">Sales Notifier</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

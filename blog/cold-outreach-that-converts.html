@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)</title>
+<meta name="description" content="How to turn a flat lead sheet into personalized, throttled cold emails with n8n — rule-based (zero API cost) with an LLM swap-in when you want generative copy.">
+<meta name="keywords" content="n8n cold email, personalized cold outreach, ai cold outreach n8n, cold email throttle, no spam cold outreach">
+<link rel="canonical" href="https://matemplates.com/blog/cold-outreach-that-converts.html">
+<meta property="og:title" content="Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)">
+<meta property="og:description" content="How to turn a flat lead sheet into personalized, throttled cold emails with n8n — rule-based with an LLM swap-in.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/cold-outreach-that-converts.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)">
+<meta name="twitter:description" content="How to turn a flat lead sheet into personalized, throttled cold emails with n8n.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article code{background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:14px;color:var(--grn)}
+  article a{color:var(--acc);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)",
+  "datePublished": "2026-08-29",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/cold-outreach.png",
+  "description": "How to turn a flat lead sheet into personalized, throttled cold emails with n8n — rule-based with an LLM swap-in.",
+  "mainEntityOfPage": "https://matemplates.com/blog/cold-outreach-that-converts.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Outreach</div>
+  <h1>Cold Outreach That Doesn't Sound Like a Robot (n8n Edition)</h1>
+  <div class="meta">Aug 29, 2026 · 8 min read</div>
+  <p class="lede">Generic blast emails go to spam and get ignored. The fix isn't a fancier LLM — it's a workflow that reads the
+     lead, writes one tailored line, and sends on a throttle so your domain stays clean. Here's how to build it in n8n.</p>
+</section>
+
+<article>
+  <h2>Why blasts fail</h2>
+  <p>Two problems kill cold email: it sounds mass-produced, and it ships faster than your domain's reputation can handle.
+     Fix both and deliverability climbs on its own. The workflow below attacks each directly.</p>
+
+  <h2>Step 1 — Read the lead sheet</h2>
+  <p>Pull name, company, and one signal (role, recent post, pain point) from Google Sheets into clean variables. One row = one
+     person, not a segment.</p>
+
+  <h2>Step 2 — Write one tailored line</h2>
+  <p>You have two paths:</p>
+  <ul>
+    <li><strong>Rule-based ($0)</strong> — a template that slots the company name and signal into a short sentence. Reads human,
+        costs nothing, never rate-limits you.</li>
+    <li><strong>LLM swap-in</strong> — point a node at Gemini (free) or OpenRouter and generate the line. Two-minute change when
+        you want generative copy.</li>
+  </ul>
+  <p>The trick: keep it short. A three-sentence email that names the recipient's company beats a polished essay every time.</p>
+
+  <h2>Step 3 — Throttle the send</h2>
+  <p>Send in small batches via Gmail/SMTP with a delay between each. This is what keeps you out of spam — not the copy, the pace.
+     Log every send to a sheet with a timestamp so you never double-contact.</p>
+
+  <h2>Step 4 — Dry-run before a single real send</h2>
+  <p>Flip one switch and the workflow writes drafts to your log sheet instead of sending. Confirm the copy looks right on dummy
+     leads, then go live. Zero risk to your domain.</p>
+
+  <div class="card">
+    <h3>Skip the build → AI Cold Outreach Personalizer</h3>
+    <p>The import-ready template ships the sheet read, the rule-based personalizer, the LLM swap-in instructions, the throttle,
+       the Sheets log, and the Telegram summary — with dry-run mode on by default.
+       <a href="/templates/cold-outreach.html">Full breakdown →</a></p>
+  </div>
+
+  <h2>The part people skip</h2>
+  <p>Personalization without pacing still gets filtered. Pacing without personalization still gets ignored. You need both, and
+     n8n is the cheapest place to wire them — free instance, free Sheets, free SMTP. The only thing that should cost you is the
+     thinking about what to say.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the wiring?</h2>
+    <p>Grab the AI Cold Outreach Personalizer — rule-based out of the box, LLM-ready in two minutes, dry-run safe.</p>
+    <a class="btn" href="https://matemplate.gumroad.com/l/tihriv">Get the personalizer →</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> · <a href="/templates/cold-outreach.html">Cold Outreach</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
