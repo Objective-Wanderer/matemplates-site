@@ -49,5 +49,12 @@
     <pubDate>Sat, 29 Aug 2026 12:00:00 +0000</pubDate>
     <description>A teardown of the flagship real-estate lead enrichment workflow: scrape, AI-score, dedupe, and route hot leads to Telegram — with a test mode that runs on dummy data first.</description>
   </item>
+  <item>
+    <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
+    <link>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</guid>
+    <pubDate>Mon, 31 Aug 2026 07:05:24 +0000</pubDate>
+    <description>Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.</description>
+  </item>
 </channel>
 </rss>
