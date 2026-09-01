@@ -72,13 +72,19 @@
 
 <header>
   <a class="logo" href="/">mate<span>mplates</span></a>
-  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)"><span></span><span></span><span></span></button>
+  <nav class="nav">
+    <a href="/#templates">Templates</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#faq">FAQ</a>
+    <a class="navcta" href="https://matemplate.gumroad.com">Store ↗</a>
+  </nav>
 </header>
 
 <section class="hero">
   <div class="kicker">Telegram</div>
   <h1>n8n Webhook to Telegram: The Only Trigger You Actually Need</h1>
-  <div class="meta">2026-08-31 · 6 min read</div>
+  <div class="meta">Aug 31, 2026 · 6 min read</div>
   <p class="lede">Skip polling and delayed emails: build an instant, reliable Telegram webhook notification system in n8n in under 10 minutes.</p>
 </section>
 
@@ -123,20 +129,20 @@
 
 <h2>Pre-Built Notification Workflows</h2>
 <p>If you want to skip manual wiring, you can use pre-configured templates that handle webhook receipt, formatting, and reliable Telegram delivery right out of the box.</p>
-<p>For example, check out our <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier template</a>, which catches instant purchase webhooks, formats immediate Telegram alerts, and sequences customer onboarding automatically.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/gumroad-sales-notifier.html">gumroad-sales-notifier</a></li></ul></div>
+<p>For example, check out our <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier template</a>, which catches instant purchase webhooks, formats immediate Telegram alerts, and sequences customer onboarding automatically.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a></li></ul></div>
 </article>
 
 <section class="cta">
   <div class="box">
     <h2>Want the workflow, not the write-up?</h2>
     <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
-    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store →</a>
   </div>
 </section>
 
 <footer>
-  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
-  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+  <div>© 2026 Matemplates · n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> · <a href="https://matemplate.gumroad.com">Store ↗</a> · <a href="/policies.html">Policies</a> · <a href="/feed.xml" type="application/rss+xml">RSS Feed</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
 </footer>
 
 </div>
