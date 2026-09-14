@@ -70,5 +70,12 @@
     <pubDate>Sat, 12 Sep 2026 02:09:57 +0000</pubDate>
     <description>Learn how to build a powerful, automated no-code CRM in Google Sheets using n8n for lead capture, upserting, and real-time alerts without SaaS bills.</description>
   </item>
+  <item>
+    <title>n8n Error Handling: Stop Losing Runs (and Leads) Silently</title>
+    <link>https://matemplates.com/blog/n8n-error-handling-dont-lose-a-run.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-error-handling-dont-lose-a-run.html</guid>
+    <pubDate>Mon, 14 Sep 2026 07:16:49 +0000</pubDate>
+    <description>Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.</description>
+  </item>
 </channel>
 </rss>

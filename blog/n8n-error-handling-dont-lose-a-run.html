@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Error Handling: Stop Losing Runs (and Leads) Silently</title>
+<meta name="description" content="Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.">
+<meta name="keywords" content="n8n error handling, n8n error trigger, n8n retry on fail, n8n continue on fail, workflow error handling, n8n stop and error, automated lead enrichment">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-error-handling-dont-lose-a-run.html">
+<meta property="og:title" content="n8n Error Handling: Stop Losing Runs (and Leads) Silently">
+<meta property="og:description" content="Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-error-handling-dont-lose-a-run.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-error-handling-dont-lose-a-run.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Error Handling: Stop Losing Runs (and Leads) Silently">
+<meta name="twitter:description" content="Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-error-handling-dont-lose-a-run.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Error Handling: Stop Losing Runs (and Leads) Silently",
+  "datePublished": "2026-09-14",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-error-handling-dont-lose-a-run.png",
+  "description": "Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-error-handling-dont-lose-a-run.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Reliability</div>
+  <h1>n8n Error Handling: Stop Losing Runs (and Leads) Silently</h1>
+  <div class="meta">2026-09-14 · 6 min read</div>
+  <p class="lede">Learn how to set up resilient n8n error handling workflows, retry policies, and alerts so your business automations never drop runs or leads silently.</p>
+</section>
+
+<article>
+<h2>Why Silent Failures Kill Automation ROI</h2>
+<p>Every automated business runs smoothly until an upstream API hiccups at 2:00 AM. By default, when an HTTP request fails or a third-party webhook payload arrives with unexpected formatting, n8n halts the execution. The run turns red in your execution history, but unless you spend your day refreshing the executions tab, you will not know anything broke until a client asks why their lead never showed up.</p>
+<p>For solopreneurs running revenue-critical workflows—lead scrapers, payment webhooks, invoice chasers—silent errors are not minor bugs; they represent lost deals and broken client trust. Building resilient workflows does not require complex enterprise infrastructure. It requires a repeatable, 3-tier error handling pattern built directly into n8n.</p>
+
+<h2>Tier 1: The Global Error Trigger Workflow</h2>
+<p>The single highest-leverage reliability fix you can make in n8n is configuring a dedicated Error Workflow. Instead of bolting try-catch logic onto every individual node, n8n provides a native <strong>Error Trigger</strong> core node designed to catch any unhandled workflow crash across your instance.</p>
+<p>Here is how to set it up in under five minutes:</p>
+<ul>
+  <li><strong>Create a dedicated workflow:</strong> Name it <code>Global Error Alert Handler</code>. Add the <strong>Error Trigger</strong> node as the starting step.</li>
+  <li><strong>Extract error context:</strong> When a workflow fails, the Error Trigger receives a structured payload containing the workflow name, execution ID, failed node name, timestamp, and the exact error stack trace.</li>
+  <li><strong>Format an instant notification:</strong> Pass that data to a Telegram or Slack node to deliver an actionable message directly to your phone: <code>🚨 Workflow Failed: [Workflow Name] at node [Node Name]. Error: [Message]. Link: [Execution URL]</code>.</li>
+  <li><strong>Attach to production workflows:</strong> Open your production workflow, click the top-right workflow settings gear icon, find <strong>Error workflow</strong>, and select your alert handler.</li>
+</ul>
+<p>Once linked, whenever a node throws an unhandled exception or times out, your error workflow fires instantly. You get alerted within seconds—often fixing the issue before your buyer or client even notices a delay.</p>
+
+<h2>Tier 2: Node-Level Resilience (Retry vs. Continue on Fail)</h2>
+<p>Not every API failure justifies halting an entire automation. A rate limit from an external enrichment API should not kill a lead capture, and a temporary 503 gateway timeout on a webhook call can often resolve itself on a second attempt. Inside the node settings tab, n8n provides two critical switches:</p>
+
+<h3>1. Retry on Fail for Transient API Glitches</h3>
+<p>For any node communicating over the network—such as external REST APIs, web scrapers, or AI model endpoints—enable <strong>Retry on Fail</strong>. Configure it to retry 2 to 3 times with a 2,000ms to 5,000ms wait between tries. This simple setting absorbs temporary network blips and API rate spikes completely hands-free.</p>
+
+<h3>2. Continue on Fail for Optional Enrichments</h3>
+<p>If a workflow step is non-essential (for example, looking up a prospect's company avatar or fetching secondary social metrics), turn on <strong>Continue on Fail</strong>. When enabled, n8n catches the failure, outputs an error object in <code>$json.error</code>, and continues executing downstream nodes.</p>
+<p>Pair this with a downstream <strong>If</strong> node to inspect whether the enrichment succeeded: if valid data is present, format it; if an error occurred, assign a clean fallback value (like <code>"Unknown"</code> or <code>null</code>) and keep moving straight to your database insert.</p>
+
+<h2>Tier 3: Guardrails with the Stop and Error Node</h2>
+<p>Sometimes the worst outcome is not an automation crash—it is an automation proceeding with garbage data. If an upstream extraction step returns empty fields where an email address or property ID should be, allowing the workflow to push blank rows into your CRM pollutes your database.</p>
+<p>Use defensive validation gates throughout your critical pipelines:</p>
+<ul>
+  <li><strong>Input validation:</strong> Place an <strong>If</strong> node or <strong>Switch</strong> node immediately following triggers to confirm required fields exist and conform to expected formats.</li>
+  <li><strong>Intentional halts with Stop and Error:</strong> When validation fails, route the invalid branch into a <strong>Stop and Error</strong> node. This explicitly terminates the run with a custom error message, triggering your global alert handler and logging the exact payload for manual review.</li>
+  <li><strong>Idempotent dead-letter logging:</strong> Append unprocessable payloads to a dedicated Google Sheet or dead-letter database table so you can replay or fix them later without losing raw input data.</li>
+</ul>
+
+<h2>Real-World Example: Production Lead Enrichment</h2>
+<p>In our production <a href="/templates/real-estate-lead-enrichment.html">Real Estate Lead Enrichment template</a>, these three layers work in concert to ensure zero dropped prospects:</p>
+<ul>
+  <li><strong>Apify Scraper Stage:</strong> Protected with <em>Retry on Fail</em> (3 tries, exponential backoff) to handle scraper queue delays.</li>
+  <li><strong>AI Scoring Stage:</strong> Protected with <em>Continue on Fail</em>; if the LLM provider experiences elevated latency, the lead is tagged with a default score and flagged for human review rather than discarded.</li>
+  <li><strong>Database Upsert:</strong> Guarded by schema validation and backed by the instance-wide <em>Error Trigger</em> so any connection loss immediately pings the team Telegram channel.</li>
+</ul>
+<p>By shifting from defensive manual monitoring to automated fail-safes, your workflows become durable assets that run reliably 24/7 without constant supervision.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/real-estate-lead-enrichment.html">Real Estate Lead Enrichment</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
