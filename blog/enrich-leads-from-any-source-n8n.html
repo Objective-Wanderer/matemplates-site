@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Enrich Leads from Any Source with n8n</title>
+<meta name="description" content="Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.">
+<meta name="keywords" content="n8n lead enrichment, lead enrichment workflow, n8n data enrichment, B2B lead enrichment automation, n8n API enrichment">
+<link rel="canonical" href="https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html">
+<meta property="og:title" content="How to Enrich Leads from Any Source with n8n">
+<meta property="og:description" content="Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/enrich-leads-from-any-source-n8n.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Enrich Leads from Any Source with n8n">
+<meta name="twitter:description" content="Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/enrich-leads-from-any-source-n8n.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Enrich Leads from Any Source with n8n",
+  "datePublished": "2026-09-14",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/enrich-leads-from-any-source-n8n.png",
+  "description": "Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.",
+  "mainEntityOfPage": "https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Lead gen</div>
+  <h1>How to Enrich Leads from Any Source with n8n</h1>
+  <div class="meta">2026-09-14 · 8 min read</div>
+  <p class="lede">Every lead form gives you a starting point, but raw data doesn't close deals. Here's how to enrich any lead source with n8n.</p>
+</section>
+
+<article>
+<p>Every lead form, scraper, or CRM export gives you a starting point — an email, a company name, maybe a job title. But raw data doesn't close deals. You need firmographics, verified contact details, and intent signals to actually qualify and reach the right people. That's what lead enrichment does, and doing it manually kills the time savings automation is supposed to buy you.</p>
+
+<p>n8n makes this surprisingly straightforward: trigger on new lead data, call one or more enrichment APIs, merge the results back into your records, and route qualified leads to your CRM or outreach tool — all in a single workflow.</p>
+
+<h2>What Lead Enrichment Actually Involves</h2>
+
+<p>At its core, lead enrichment takes a partial record and fills in the blanks. The most common enrichment layers:</p>
+
+<ul>
+  <li><strong>Contact verification</strong> — Is this email real? Is this phone number still active?</li>
+  <li><strong>Company firmographics</strong> — Industry, company size, revenue, funding stage, tech stack</li>
+  <li><strong>Identity resolution</strong> — Matching an email to a LinkedIn profile, job title, or social handle</li>
+  <li><strong>Intent signals</strong> — Is this company actively researching solutions like yours?</li>
+</ul>
+
+<p>You don't need all four layers for every workflow. A real estate lead list might only need company size and location verification. A SaaS outbound campaign might want full firmographics plus intent. The point is: pick the layers that matter for your use case, then wire them up once.</p>
+
+<h2>The n8n Enrichment Pattern</h2>
+
+<p>Most enrichment workflows in n8n follow the same skeleton:</p>
+
+<ul>
+  <li><strong>Trigger</strong> — Webhook (form submission, CRM event), schedule (poll a spreadsheet), or a Google Sheets row watcher</li>
+  <li><strong>Fetch</strong> — Pull the raw lead data from wherever it landed</li>
+  <li><strong>Enrich</strong> — One or more HTTP Request nodes calling enrichment APIs, with the lead's email or domain as the lookup key</li>
+  <li><strong>Merge</strong> — Combine the enrichment response back into the original record using a Merge node or Code node</li>
+  <li><strong>Route</strong> — Filter by qualification criteria, then push to CRM, send a Slack notification, or trigger an outreach sequence</li>
+</ul>
+
+<p>The Merge node is where most people get tripped up. If you're enriching from multiple sources, use a <strong>Combine mode → Merge by Position</strong> or match on a unique key like email. Don't just append — you'll duplicate fields.</p>
+
+<h2>Free and Paid Enrichment APIs That Work with n8n</h2>
+
+<p>You don't need a five-figure ZoomInfo contract to start enriching. Here's what actually works at different budget levels:</p>
+
+<ul>
+  <li><strong>Apollo.io</strong> — Free tier gives you 50 credits/month. Contact enrichment, company data, and email verification in one API. The HTTP Request node in n8n handles it cleanly.</li>
+  <li><strong>Clearbit</strong> — Now part of HubSpot Breeze Intelligence. Strong firmographic data (40+ attributes). Free lookups are limited but the API is dead simple.</li>
+  <li><strong>Lusha</strong> — Focused on verified B2B contact data. Good for phone numbers and direct dials. API returns structured JSON that maps straight into Google Sheets or Airtable.</li>
+  <li><strong>Hunter.io</strong> — Email finding and verification. Free tier: 25 searches + 50 verifications/month. Great for enriching a company-domain-only lead list into actual email addresses.</li>
+  <li><strong>FullContact</strong> — Identity resolution specialist. Takes an email or phone and returns social profiles, job title, and company. Free tier: 100 matches/month.</li>
+</ul>
+
+<p>For a self-hosted n8n instance, you can also use <strong>Apify actors</strong> (Google Maps scraper, LinkedIn enrichment) as a cheaper alternative to dedicated enrichment APIs — especially useful for local business lead lists.</p>
+
+<h2>Waterfall Enrichment: Stack APIs for Better Coverage</h2>
+
+<p>No single enrichment provider has 100% coverage. The waterfall pattern tries multiple sources in sequence, using the first one that returns useful data:</p>
+
+<ul>
+  <li>Try Apollo first (cheapest per lookup)</li>
+  <li>If Apollo returns no result, fall back to Lusha</li>
+  <li>If Lusha misses, try Clearbit or FullContact</li>
+</ul>
+
+<p>In n8n, implement this with an <strong>IF node chain</strong>: check if the first API returned a non-empty result, and only call the next API if it didn't. The Code node is your friend here — write a quick check like <code>if ($input.first().json.company) return $input.first();</code> to short-circuit the chain.</p>
+
+<p>This pattern dramatically improves your enrichment hit rate without blowing through credits on a single expensive provider.</p>
+
+<h2>Practical Tips That Save Headaches</h2>
+
+<ul>
+  <li><strong>Rate limits matter.</strong> Most enrichment APIs cap at 5-10 requests/second. Use n8n's built-in retry on failure with a 2-second delay, or add a Wait node between batches.</li>
+  <li><strong>Cache enrichment results.</strong> If you're enriching the same leads repeatedly (e.g. from a growing spreadsheet), store the enriched output in a separate sheet or database. Don't re-enrich what you already have.</li>
+  <li><strong>Validate before routing.</strong> An enriched lead with no email is still useless. Add a filter step that only passes records where at least one contact method is verified.</li>
+  <li><strong>Log your API usage.</strong> Track how many enrichment credits you burn per workflow run. It's easy to accidentally run a daily poll that eats your monthly quota in a week.</li>
+</ul>
+
+<h2>Start with a Real Workflow</h2>
+
+<p>If you want to see this pattern in action — trigger, enrich, qualify, and route — our <a href="/templates/real-estate-lead-enrichment.html">Real Estate Lead Enrichment</a> template does exactly this. It watches a Google Sheet for new rows, enriches each lead with company and contact data, scores them, and pushes qualified leads into your outreach pipeline. Import it, swap in your API keys, and you have a working enrichment workflow in under ten minutes.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/real-estate-lead-enrichment.html">Real Estate Lead Enrichment</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

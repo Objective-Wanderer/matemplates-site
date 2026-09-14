@@ -77,5 +77,12 @@
     <pubDate>Mon, 14 Sep 2026 07:16:49 +0000</pubDate>
     <description>Master n8n error handling: set up global Error Trigger workflows, handle retries, and stop losing critical automation runs and leads silently.</description>
   </item>
+  <item>
+    <title>How to Enrich Leads from Any Source with n8n</title>
+    <link>https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html</guid>
+    <pubDate>Mon, 14 Sep 2026 13:37:47 +0000</pubDate>
+    <description>Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.</description>
+  </item>
 </channel>
 </rss>
