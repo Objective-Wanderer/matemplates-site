@@ -78,5 +78,19 @@
     <pubDate>Mon, 14 Sep 2026 13:37:47 +0000</pubDate>
     <description>Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.</description>
   </item>
+  <item>
+    <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
+    <link>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</guid>
+    <pubDate>Thu, 24 Sep 2026 07:08:39 +0000</pubDate>
+    <description>Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.</description>
+  </item>
+  <item>
+    <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
+    <link>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</guid>
+    <pubDate>Thu, 24 Sep 2026 07:08:57 +0000</pubDate>
+    <description>Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.</description>
+  </item>
 </channel>
 </rss>

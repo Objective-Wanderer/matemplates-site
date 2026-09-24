@@ -2,179 +2,160 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
-<meta name="description" content="Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.">
-<meta name="keywords" content="n8n webhook telegram, n8n telegram trigger, telegram bot webhook, n8n notification bot, n8n webhook tutorial">
+<meta name="description" content="Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.">
+<meta name="keywords" content="n8n, telegram trigger, webhook, botfather, automation, telegram bot">
 <link rel="canonical" href="https://matemplates.com/blog/n8n-webhook-telegram-trigger.html">
 <meta property="og:title" content="n8n Webhook to Telegram: The Only Trigger You Actually Need">
-<meta property="og:description" content="Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.">
+<meta property="og:description" content="Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://matemplates.com/blog/n8n-webhook-telegram-trigger.html">
 <meta property="og:site_name" content="Matemplates">
-<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-telegram-trigger.png?v=1789418357">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="n8n Webhook to Telegram: The Only Trigger You Actually Need">
-<meta name="twitter:description" content="Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-telegram-trigger.png?v=1789418357">
+<meta name="twitter:description" content="Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
 <style>
   :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
   .wrap{max-width:820px;margin:0 auto;padding:0 20px}
-  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
-  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
-  .logo span{color:var(--acc, #ff7a00)}
-  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
-  .nav a:hover{color:var(--txt, #eef3fb)}
-  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
   .hero{padding:56px 0 20px}
-  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:700;text-transform:uppercase}
   .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
-  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
-  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
-  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
-  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
-  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
-  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut);margin:12px 0 12px 22px;font-size:16px}
   article li{margin:6px 0}
-  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a{color:var(--acc);text-decoration:none}
   article a:hover{text-decoration:underline}
-  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
-  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
   .cta{text-align:center;padding:40px 0 24px}
-  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:36px 26px}
   .cta h2{margin:0 0 10px;font-size:24px}
-  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
-  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .cta p{color:var(--mut);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
   .btn:hover{filter:brightness(1.08)}
-  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-  footer a{color:var(--mut, #9fb0c9)}
-
-  .nav{display:flex;align-items:center;gap:20px;margin-left:auto}
-  .nav a{color:var(--txt2);font-size:14px;font-weight:500;text-decoration:none;transition:color .15s}
-  .nav a:hover{color:var(--txt, #eef3fb)}
-  .nav a.active{color:var(--acc, #ff7a00)}
-  .nav a.active:hover{color:var(--acc, #ff7a00)}
-  .nav .navcta{background:var(--acc, #ff7a00);color:#fff;padding:8px 16px;border-radius:8px;font-weight:600;font-size:14px;box-shadow:0 2px 10px rgba(255,122,0,.25);transition:transform .15s,opacity .15s}
-  .nav .navcta:hover{opacity:.9;transform:translateY(-1px);color:#fff}
-  .navtoggle{display:none;background:none;border:none;margin-left:12px;padding:6px 2px;cursor:pointer;
-             flex-direction:column;justify-content:center;gap:5px}
-  .navtoggle span{display:block;width:26px;height:3px;background:var(--acc, #ff7a00);border-radius:2px}
-
-  @media(max-width:640px){
-    header{position:relative}
-    .nav{display:none;position:absolute;top:60px;right:14px;flex-direction:column;
-         background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:12px;
-         padding:10px 14px;gap:4px;min-width:172px;z-index:60;margin-left:0}
-    .nav.open{display:flex}
-    .nav a{margin:0;padding:9px 4px;font-size:15px}
-    .nav .navcta{padding:9px 14px;text-align:center}
-    .navtoggle{display:flex;flex-direction:column;justify-content:center;gap:5px}
-    .hero{padding:48px 0 28px}
-    .cover{max-height:200px}
-    .card img{height:auto}
-  }
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "n8n Webhook to Telegram: The Only Trigger You Actually Need",
-  "datePublished": "2026-08-31",
+  "datePublished": "2026-09-24",
   "author": {"@type": "Organization", "name": "Matemplates"},
   "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
-  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-telegram-trigger.png?v=1789418357",
-  "description": "Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.",
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/gumroad-sales-notifier.png",
+  "description": "Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.",
   "mainEntityOfPage": "https://matemplates.com/blog/n8n-webhook-telegram-trigger.html"
 }
 </script>
 </head>
 <body>
 <div class="wrap">
-
 <header>
   <a class="logo" href="/">mate<span>mplates</span></a>
-  <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="(function(b){var n=document.querySelector('.nav');var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);})(this)"><span></span><span></span><span></span></button>
-  <nav class="nav">
-    <a href="/#templates">Templates</a>
-    <a href="/blog/">Blog</a>
-    <a href="/#faq">FAQ</a>
-    <a class="navcta" href="https://matemplate.gumroad.com" title="matemplate.gumroad.com is our official storefront on Gumroad">Store ↗</a>
-  </nav>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
 </header>
-
 <section class="hero">
   <div class="kicker">Telegram</div>
   <h1>n8n Webhook to Telegram: The Only Trigger You Actually Need</h1>
-  <div class="meta">Aug 31, 2026 · 6 min read</div>
-  <p class="lede">Email gets buried, polling wastes cycles. A Telegram webhook lands where your eyes already are — here's the whole setup, plus the gotchas that bite you in production.</p>
+  <div class="meta">2026-09-24 · 7 min read</div>
+  <p class="lede">The Telegram Trigger node is the piece you need when a Telegram message should start an n8n workflow — not a generic webhook, not a polling loop, not a third-party bridge.</p>
 </section>
-
 <article>
-<h2>Why webhooks beat polling and email</h2>
-<p>Email notifications get buried. Polling wastes cycles checking for updates that haven't happened. A Telegram webhook does the opposite — the event comes to you, instantly, and your phone lights up.</p>
-<p>I use this pattern for sale alerts, server pings, and client onboarding updates. Zero compute while idling, sub-second delivery, and the whole thing runs on free-tier n8n.</p>
+<h2>Why the Telegram Trigger node is the one to learn first</h2>
+<p>If you run n8n and want something to happen when a Telegram message arrives, the Telegram Trigger node is the piece you need — not a generic webhook, not a polling loop, not a third-party bridge. It registers a webhook with Telegram the moment you activate the workflow, so updates reach your n8n instance within seconds and nothing keeps calling the API on a timer. For a solopreneur running one or two automations, that means less infrastructure to maintain and faster reactions when something actually matters.</p>
 
-<h2>Two ways to wire it in n8n</h2>
-<p>You've got two paths:</p>
+<h2>What the Telegram Trigger actually listens for</h2>
+<p>The node ships with nine event families. Most people only ever need one or two, but it helps to know the full surface before you start wiring conditions:</p>
 <ul>
-  <li><strong>Generic Webhook node</strong> — n8n gives you a static HTTPS endpoint. External services (Gumroad, Stripe, your own API) POST data there, you parse the JSON, and forward a formatted message to Telegram via the <code>sendMessage</code> node. This is what I use for most one-way alerts.</li>
-  <li><strong>Telegram Trigger node</strong> — n8n registers its own webhook URL with Telegram's <code>setWebhook</code> API automatically. When someone messages your bot or fires a <code>/status</code> command, Telegram pushes the update straight into your workflow. Better for two-way bots.</li>
+  <li><strong>message</strong> — a user sends a text, photo, document, or sticker to your bot or a group the bot is in. This is the default and the most common starting point.</li>
+  <li><strong>callback_query</strong> — someone taps a button planted by an inline keyboard. Use this when your workflow offers choices (approve, deny, pick a template) and you want the tap to route somewhere.</li>
+  <li><strong>channel_post</strong> — a post lands in a channel the bot is a member of. Useful for monitoring a broadcast channel or auto-responding to new posts.</li>
+  <li><strong>edited_message</strong> — a message was edited after send. Handy when you want to catch corrections or updates without treating them as brand-new messages.</li>
+  <li><strong>edited_channel_post</strong> — same idea, but for channel posts.</li>
+  <li><strong>inline_query</strong> — a user typed your bot name in the Telegram input bar and selected it. This is the entry point for bots that surface results as the user types.</li>
+  <li><strong>shipping_query</strong>, <strong>pre_checkout_query</strong>, <strong>poll</strong> — niche events for payments and polls; most solopreneur workflows never touch these.</li>
 </ul>
-<p>For sale notifications, support pings, or monitoring alerts — the Generic Webhook route is simpler and more predictable. You control exactly what hits the endpoint.</p>
+<p>Pick the events you actually care about on the node's parameter panel, activate the workflow, and n8n handles the rest. You do not need to manually register a webhook URL or keep a tunnel running unless you are testing locally.</p>
 
-<h2>Set up your bot with BotFather</h2>
-<p>You need a bot token first. Takes two minutes:</p>
+<h2>The one-time setup that everything else depends on</h2>
+<p>Before any workflow can fire, you need a Telegram bot and a credential in n8n. The whole sequence is short enough to do in a single sitting:</p>
 <ul>
-  <li>Open Telegram, message <code>@BotFather</code>.</li>
-  <li>Send <code>/newbot</code>, pick a display name and a username ending in <code>bot</code>.</li>
-  <li>Copy the token (looks like <code>123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ</code>). Paste it into n8n's Telegram credentials.</li>
-  <li>If the bot lives in a group, send <code>/setprivacy</code> → Disabled so it can actually read messages.</li>
+  <li>Open Telegram and talk to <strong>@BotFather</strong>. Send <code>/newbot</code>, pick a name and a username ending in <code>bot</code>, and copy the API token BotFather hands back.</li>
+  <li>In n8n, open the Credentials menu, create a Telegram credential, and paste that token into the Access Token field. One credential covers every workflow that needs Telegram — you do not create a new one per bot or per workflow.</li>
+  <li>Add a Telegram Trigger node to a fresh workflow, select the credential, choose the event (usually <strong>message</strong> to start), and activate the workflow.</li>
 </ul>
+<p>When the workflow activates, n8n registers the webhook with Telegram behind the scenes. From that point on, any message that matches your chosen event type flows into the workflow as JSON. The first time you test it, send a message to the bot and confirm an execution appears in the n8n execution list — that single confirmation is worth more than any tutorial screenshot.</p>
 
-<h2>The n8n setup</h2>
-<p>Telegram only accepts webhooks over HTTPS. If you're self-hosting n8n, make sure you've got a valid domain with a reverse proxy (Caddy, Nginx, Cloudflare Tunnel — whatever you run) and the <code>WEBHOOK_URL</code> env var pointing at it.</p>
-<p>On the canvas:</p>
+<h2>Local testing and the HTTPS requirement</h2>
+<p>Telegram only calls webhook URLs over HTTPS. That is fine on n8n Cloud, where the instance already has a public HTTPS address. On a self-hosted instance running on your laptop or a home server, you need a public URL for the registration to stick. The common approaches:</p>
 <ul>
-  <li><strong>Credentials:</strong> paste your BotFather token into the Telegram API credentials.</li>
-  <li><strong>Test vs Active:</strong> the Telegram API allows only one webhook per bot. When you click "Listen for Test Event", n8n registers a temporary one. Flip the workflow to <strong>Active</strong> to lock in the production endpoint — this is the one that stays up.</li>
-  <li><strong>Parsing the payload:</strong> message text lives at <code>{{ $json.message.text }}</code>, sender info at <code>{{ $json.message.from }}</code>. That's all you need for most alerts.</li>
+  <li><strong>ngrok</strong> — forwards a public HTTPS URL to your local n8n port. Set <code>WEBHOOK_URL</code> and <code>WEBHOOK_TUNNEL_URL</code> to the ngrok address so n8n registers the right endpoint with Telegram.</li>
+  <li><strong>Pinggy</strong> — a lighter-weight alternative that gives you a public tunnel without an account in many cases; useful for a quick local test session.</li>
+  <li><strong>A VPS or always-on host</strong> — once a workflow is more than a test, running n8n on a small server removes the tunnel entirely and keeps the webhook stable across restarts.</li>
 </ul>
+<p>If the webhook registration fails, the most common cause is an HTTP URL where Telegram expected HTTPS. Check that your tunnel or public host is serving HTTPS and that n8n's <code>WEBHOOK_URL</code> points to it.</p>
 
-<h2>Things that bite you in production</h2>
-<p>Three gotchas I learned the hard way:</p>
+<h2>A practical first workflow: sales alerts in Telegram</h2>
+<p>The pattern that justifies learning the trigger node on day one is a Gumroad-to-Telegram notifier. The flow is simple enough to build in under ten minutes and immediately useful:</p>
 <ul>
-  <li><strong>Markdown escaping:</strong> underscores, asterisks, and angle brackets in dynamic text cause <code>400 Bad Request</code> from Telegram. Sanitize before you build the message. A <code>Code</code> node with a simple replace-all works.</li>
-  <li><strong>Rate limits:</strong> Telegram caps you at 30 messages/sec across all chats, 1/sec per group. For high-volume triggers, batch messages or add a small delay between sends.</li>
-  <li><strong>Duplicate alerts:</strong> if Telegram doesn't get a <code>200 OK</code> back quickly enough, it retries. Keep your trigger workflow lightweight so it responds fast — otherwise you get the same alert twice.</li>
+  <li>Gumroad sends a webhook ping to an n8n webhook node when a sale lands.</li>
+  <li>An intermediate step formats the buyer name, product, and amount into a short message.</li>
+  <li>A Telegram node sends that message to a private channel or your personal chat.</li>
+</ul>
+<p>This is the same shape as most notification automations — inbound event, light formatting, outbound alert — and it teaches you the credential flow, the trigger-vs-webhook distinction, and how to pass data from one node to the next without taking more than a coffee break. The template that owns this flow lives in the store: <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a>.</p>
+
+<h2>What to wire next once the trigger works</h2>
+<p>Once a message reaches your workflow, the Telegram node can do more than send a plain reply. A few directions that tend to pay off for solo operators:</p>
+<ul>
+  <li><strong>Inline keyboards</strong> — attach buttons to a message and let users tap through choices instead of typing commands. The callback_query event catches the taps.</li>
+  <li><strong>Group monitoring</strong> — add the bot to a group, set it to admin if it needs to read every message, and react to keywords, links, or join/leave events.</li>
+  <li><strong>Conditional routing</strong> — an IF node on the incoming message text or chat ID lets one workflow handle multiple intents: help commands go one way, purchase alerts another, unknown messages a third.</li>
+  <li><strong>Scheduled follow-ups</strong> — pair the trigger with a Cron node so the bot sends a reminder, a digest, or a status update on a timer rather than only reacting to inbound messages.</li>
+</ul>
+<p>None of these require custom code. The Telegram node covers sending messages, replying to the originating chat, and attaching keyboards; everything else is standard n8n logic layered on top.</p>
+
+<h2>The mistakes that burn the most time</h2>
+<p>A few things to avoid so the setup stays a twenty-minute task instead of a weekend:</p>
+<ul>
+  <li><strong>Re-registering the webhook by hand</strong> — the Trigger node does this on activation. Manually calling Telegram's <code>setWebhook</code> alongside an active n8n workflow creates conflicts and dropped updates.</li>
+  <li><strong>Using the wrong credential</strong> — the Telegram Trigger and the Telegram sending node both want the same bot token credential. If you created one per workflow by habit, consolidate to a single credential and re-select it everywhere.</li>
+  <li><strong>Testing HTTP locally and assuming production is the same</strong> — a local HTTP tunnel works for a test session, but the production webhook must be HTTPS. If you ship a workflow that registrations fails on in production, the first thing to check is the protocol.</li>
+  <li><strong>Over-triggering on every event</strong> — selecting all nine events on the node "just to see what happens" fills your execution log with noise. Start with message, add only the events you actually route on, and ignore the rest.</li>
 </ul>
 
-<h2>Skip the build</h2>
-<p>If you'd rather import than wire, the <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> template already handles all of this — webhook receipt, Telegram alert, welcome email, and review follow-up, all in one import.</p>
-
-<p>Related reading: if you sell digital products, pair this webhook with our <a href="/blog/gumroad-sale-telegram-alert.html">Gumroad sale alert workflow</a> — you'll get instant Telegram notifications for every new purchase.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> — sale alerts, welcome emails, review nudges, done</li></ul></div>
+<h2>Related template</h2>
+<p>The <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> template puts this trigger pattern to work: a sale lands, n8n formats the alert, and a Telegram message hits your phone before you refresh the dashboard. Import it, swap in your own credential, and you have a working notification pipeline in minutes — then extend it with the routing and keyboard patterns above.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/gumroad-sales-notifier.html">gumroad-sales-notifier</a></li></ul></div>
 </article>
-
 <section class="cta">
   <div class="box">
     <h2>Want the workflow, not the write-up?</h2>
     <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
-    <a class="btn" href="https://matemplate.gumroad.com" title="matemplate.gumroad.com is our official storefront on Gumroad">Browse the store →</a>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
   </div>
 </section>
-
 <footer>
-  <div>© 2026 Matemplates · n8n workflow templates</div>
-  <div><a href="/blog/">Blog</a> · <a href="https://matemplate.gumroad.com" title="matemplate.gumroad.com is our official storefront on Gumroad">Store ↗</a> · <a href="/policies.html">Policies</a> · <a href="/feed.xml" type="application/rss+xml">RSS Feed</a> · <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
 </footer>
-
 </div>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
