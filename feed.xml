@@ -92,5 +92,12 @@
     <pubDate>Thu, 24 Sep 2026 07:08:57 +0000</pubDate>
     <description>Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.</description>
   </item>
+  <item>
+    <title>n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails</title>
+    <link>https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html</guid>
+    <pubDate>Mon, 28 Sep 2026 17:02:45 +0000</pubDate>
+    <description>Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.</description>
+  </item>
 </channel>
 </rss>

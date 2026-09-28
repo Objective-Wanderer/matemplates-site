@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails</title>
+<meta name="description" content="Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.">
+<meta name="keywords" content="n8n idempotency, n8n webhook duplicate execution, webhook retries n8n, n8n double charge, n8n duplicate emails, n8n data table dedup">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html">
+<meta property="og:title" content="n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails">
+<meta property="og:description" content="Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-idempotency-double-charges.png?v=1790614965">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails">
+<meta name="twitter:description" content="Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-idempotency-double-charges.png?v=1790614965">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails",
+  "datePublished": "2026-09-28",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-webhook-idempotency-double-charges.png?v=1790614965",
+  "description": "Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Reliability</div>
+  <h1>n8n Webhook Idempotency: Stop Double Charges and Duplicate Emails</h1>
+  <div class="meta">2026-09-28 · 7 min read</div>
+  <p class="lede">Your workflow is not buggy. The provider is behaving exactly as designed — it retried because your server was too slow to answer, and now the customer has been charged twice.</p>
+</section>
+
+<article>
+<p>Most duplicate-workflow bugs in n8n are not n8n bugs. A webhook sender — Stripe, Shopify, GitHub, Gumroad — delivers events with <strong>at-least-once</strong> semantics. If the HTTP request times out or returns a 5xx, the provider assumes you never got it and resends the identical payload. n8n sees that resend as a brand-new trigger, runs the whole workflow again, and the second run charges the card, sends the email, or writes the row a second time.</p>
+
+<p>The fix is not to stop retries. It is to make your workflow <strong>idempotent</strong>: running it twice with the same logical event must produce the same result as running it once. This post is the pattern — a fast acknowledgement at the trigger, a stable key derived from the business event, a lookup that short-circuits the duplicate, and a log so you can see what got blocked.</p>
+
+<h2>Why the duplicate happens: one timeout, two side effects</h2>
+<p>The failure sequence is short and it is almost always the same. Your workflow starts, the trigger fires, n8n begins running nodes, and somewhere in the middle an external call takes too long. The provider gave up waiting and marked the delivery failed. It retries thirty seconds later.</p>
+<ul>
+  <li><strong>First delivery</strong> — the run starts, the charge succeeds, the workflow finishes its work, but the response arrives after the provider's window. The provider records a failure it cannot distinguish from "server never ran".</li>
+  <li><strong>Retry</strong> — the identical payload arrives again. n8n has no memory of the first run, so it starts a second execution from scratch and the side effect fires again.</li>
+</ul>
+<p>Notice that your workflow behaved correctly on both runs. The duplication came entirely from the retry. That is why the fix belongs at the boundary of the workflow, not in the middle of it.</p>
+
+<h2>Step 1: Acknowledge the webhook immediately</h2>
+<p>The single highest-leverage setting in this whole pattern is the Webhook node's response mode. In the node's <strong>Response Mode</strong> setting, choose <strong>Using 'Respond to Webhook' node</strong> as the mode, then place a Respond to Webhook node as the <em>first</em> node after the trigger that returns <code>200</code> with an empty or minimal body.</p>
+<p>Everything else in the workflow then runs in the same execution, but the provider has already been told "received" and stops retrying. This one setting eliminates the majority of duplicate scenarios before you write a single line of guard logic, because most duplicates are timeouts, not genuine re-sends.</p>
+<p>One caveat worth knowing before you rely on <code>{{ $execution.id }}</code> in the response body: there is a long-standing n8n issue where the expression evaluates to empty when the Webhook trigger itself answers immediately, because the execution ID is not yet assigned at that point. If you need the execution ID in the response, answer from the Webhook node's own response data, or accept the separate Respond to Webhook node workaround.</p>
+
+<h2>Step 2: Build a key from the business event, not the run</h2>
+<p>Now handle the retries that survive step 1 — the provider that re-sends a genuine duplicate, or the one that re-sent while your instance was down. You need a value that means "I have already handled this specific thing".</p>
+<p>The most common mistake is using the execution ID or a random UUID as that key. It is generated per run, so a retry from a second run produces a <em>different</em> key and sails straight through the guard. Your key has to be deterministic and derived from the payload:</p>
+<ul>
+  <li><strong>Best — the provider's own event ID.</strong> Stripe sends <code>event.id</code>, Shopify sends <code>X-Shopify-Event-Id</code>, GitHub sends <code>X-GitHub-Delivery</code>. These are stable across retries of the same event and are exactly what the idempotency key is for.</li>
+  <li><strong>Good — a composite of business fields.</strong> For an invoice dunning workflow, something like <code>invoice:{{ $json.invoice_number }}:{{ $json.dunning_stage }}</code> means "this nudge for this invoice" only ever fires once, no matter how many times the source retries.</li>
+  <li><strong>Fallback — a hash of the payload.</strong> When the sender gives you nothing stable, add a Code node right after the trigger and hash the canonicalised JSON to produce a collision-resistant fingerprint.</li>
+</ul>
+<p>Write the key as a prefixed string rather than a bare value. A prefix like <code>gumroad-sale:</code> or <code>charge:</code> means one shared table can hold keys for several workflows without two unrelated events colliding on the same value.</p>
+
+<h2>Step 3: Look up the key before the first side-effect node</h2>
+<p>This is the guard. It must sit <strong>before</strong> the first node that touches the outside world — the charge, the email send, the database insert. A guard placed one node too late has already duplicated the thing it was meant to prevent.</p>
+<p>The n8n-native way to hold the key set is the <strong>Data Table</strong> node, which stores structured data inside the instance:</p>
+<ul>
+  <li>Create a data table named <code>webhook_idempotency</code> with columns <code>key</code>, <code>status</code>, <code>execution_id</code>, and <code>processed_at</code>. You can also create and inspect tables from the Data Tables tab in your project overview.</li>
+  <li>Add a <strong>Data Table</strong> node in <strong>Row</strong> → <strong>Select</strong> mode, filtering on <code>key</code> equals the expression you built in step 2.</li>
+  <li>Add an <strong>If</strong> node: if a row came back, this event was already handled.</li>
+  <li>On the "already handled" branch, stop the execution — no-op, and optionally write a line to a dead-letter sheet for your own visibility.</li>
+  <li>On the "new event" branch, run the real work, then use <strong>Row</strong> → <strong>Upsert</strong> to record the key with its final status.</li>
+</ul>
+<p>Using <strong>Upsert</strong> rather than <strong>Insert</strong> matters: if two copies of the same event arrive close together, the upsert updates the existing row instead of failing on a duplicate-key error and turning a duplicate into a hard failure.</p>
+
+<h2>Step 4: Log what you blocked</h2>
+<p>A guard you never inspect is a guard you cannot trust. Two minutes of logging pays for itself the first time it blocks something real:</p>
+<ul>
+  <li>Append blocked duplicates to a Google Sheet with the key, the execution ID, and a timestamp. Volume here is your duplicate rate and it should trend to zero.</li>
+  <li>Send a count to Telegram on a schedule so a spike is visible without opening a spreadsheet.</li>
+  <li>Prune old rows. A 24-hour window is what the published AARI idempotency gate template uses; anything older than your longest provider retry window is dead weight in the table.</li>
+</ul>
+<p>If you would rather have the table handle it, the AARI template on the n8n template library implements exactly this shape — record the key on first arrival, return an immediate 200, and return a BLOCK decision that stops the workflow before any side effect runs when the same key reappears inside 24 hours.</p>
+
+<h2>Where this fits alongside error handling</h2>
+<p>Idempotency is the half of reliability people skip. The other half is what happens when a node genuinely fails, and the two are complements rather than alternatives:</p>
+<ul>
+  <li><strong>Node-level retry</strong> — a transient 503 on an API call is retried two or three times with a wait. Fine, as long as the node being retried is either read-only or guarded by an idempotency key of its own.</li>
+  <li><strong>Error Trigger workflow</strong> — the instance-wide handler that pings you when an execution dies. Worth wiring regardless, but note that it fires on failure, not on duplication: a duplicated charge succeeds cleanly and never triggers it.</li>
+  <li><strong>Timeouts</strong> — <code>EXECUTIONS_TIMEOUT</code> sets a default per-workflow execution limit in seconds and <code>EXECUTIONS_TIMEOUT_MAX</code> sets the ceiling you can raise it to for an individual workflow. Sizing these to the workflow rather than globally matters, because one value cannot fit both a three-node alert and a long enrichment run.</li>
+</ul>
+<p>If you have not set up the error side yet, <a href="/blog/n8n-error-handling-dont-lose-a-run.html">n8n Error Handling: Stop Losing Runs (and Leads) Silently</a> covers the three-tier pattern. The short version: retry the transient, continue on the optional, halt loudly on the invalid — and add the idempotency gate above it so the retries never double-charge anyone.</p>
+
+<h2>The mistakes that cost the most time</h2>
+<ul>
+  <li><strong>Guarding after the side effect.</strong> A lookup placed after the send or the insert protects nothing. The check has to be the first thing after the response.</li>
+  <li><strong>Keying on the run, not the event.</strong> Execution IDs and <code>{{ $uuid }}</code> are unique by construction, so they can never detect a duplicate. This is the most common reason a hand-rolled guard "does not work".</li>
+  <li><strong>Leaving the response mode on "Using 'Respond to Webhook' node" but placing the node at the end.</strong> The provider is still waiting the whole time, and the timeout is still there. The Respond to Webhook node has to come first.</li>
+  <li><strong>Never expiring keys.</strong> An unpruned table grows forever and a key that never expires will eventually block a legitimate repeat — a customer paying the same invoice twice six months apart is two real events, not one duplicate.</li>
+  <li><strong>Assuming retries are always the provider's fault.</strong> Your own node retry policy can re-fire a side effect too. If a node's request succeeded but the response was lost, Retry on Fail will send it again. The idempotency key has to be applied per side-effecting action, not once per workflow.</li>
+</ul>
+
+<h2>Where this matters most in a one-person business</h2>
+<p>The workflows where a duplicate is expensive rather than annoying are the ones with money or a promise attached:</p>
+<ul>
+  <li><strong>Payment webhooks</strong> — the customer is charged twice, and you are the one fielding the refund request.</li>
+  <li><strong>Digital delivery</strong> — a Gumroad sale fires twice, the buyer gets two confirmation emails, and one of them is a second access email for a product they already own.</li>
+  <li><strong>Invoice follow-up</strong> — a retried dunning run sends the "final notice" email two days in a row, which is the fastest way to lose a client you were trying to keep paid.</li>
+  <li><strong>Lead and CRM writes</strong> — duplicate rows quietly corrupt the pipeline, and the skew is invisible until someone counts the numbers for a forecast.</li>
+</ul>
+<p>Each of these has the same shape: an inbound event, a key that identifies it, one irreversible action. The gate is roughly six nodes, and it is the cheapest insurance in the stack.</p>
+
+<h2>Start with a real workflow</h2>
+<p>If you want the guard pattern in a runnable form, the <a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a> is the cleanest test case: a sale webhook arrives, n8n alerts you on Telegram and emails the buyer, and a retried delivery means a duplicate alert and a duplicate email to someone who just paid. Import it, add the guard described above, and you have a production-safe notification pipeline in under half an hour.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
