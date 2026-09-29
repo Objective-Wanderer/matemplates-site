@@ -5,7 +5,7 @@
   <link>https://matemplates.com/blog/</link>
   <description>Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, support triage, and lead enrichment — with real workflow teardowns.</description>
   <language>en</language>
-  <lastBuildDate>Sat, 29 Aug 2026 12:00:00 +0000</lastBuildDate>
+  <lastBuildDate>Mon, 28 Sep 2026 17:02:45 +0000</lastBuildDate>
   <atom:link href="https://matemplates.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
       <title>5 n8n Automations Every Solopreneur Should Steal in 2026</title>
@@ -50,13 +50,6 @@
       <description>A teardown of the flagship real-estate lead enrichment workflow: scrape, AI-score, dedupe, and route hot leads to Telegram — with a test mode that runs on dummy data first.</description>
     </item>
   <item>
-    <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
-    <link>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</link>
-    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</guid>
-    <pubDate>Mon, 31 Aug 2026 07:05:24 +0000</pubDate>
-    <description>Learn how to build instant, reliable Telegram webhook triggers in n8n for real-time notifications, bot commands, and automated alerts.</description>
-  </item>
-  <item>
     <title>Build a No-Code CRM in Google Sheets with n8n</title>
     <link>https://matemplates.com/blog/no-code-crm-google-sheets-n8n.html</link>
     <guid isPermaLink="true">https://matemplates.com/blog/no-code-crm-google-sheets-n8n.html</guid>
@@ -77,13 +70,6 @@
     <guid isPermaLink="true">https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html</guid>
     <pubDate>Mon, 14 Sep 2026 13:37:47 +0000</pubDate>
     <description>Learn how to enrich leads from any source using n8n — connect enrichment APIs, score prospects, and route qualified leads automatically.</description>
-  </item>
-  <item>
-    <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>
-    <link>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</link>
-    <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</guid>
-    <pubDate>Thu, 24 Sep 2026 07:08:39 +0000</pubDate>
-    <description>Set up the n8n Telegram Trigger node once: create a bot with BotFather, add the credential, and let n8n register the webhook so messages reach your workflow in seconds.</description>
   </item>
   <item>
     <title>n8n Webhook to Telegram: The Only Trigger You Actually Need</title>

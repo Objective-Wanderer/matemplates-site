@@ -49,12 +49,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://matemplates.com/blog/no-code-crm-google-sheets-n8n.html</loc>
     <lastmod>2026-09-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -69,12 +63,6 @@
   <url>
     <loc>https://matemplates.com/blog/enrich-leads-from-any-source-n8n.html</loc>
     <lastmod>2026-09-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://matemplates.com/blog/n8n-webhook-telegram-trigger.html</loc>
-    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
