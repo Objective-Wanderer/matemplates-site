@@ -1,0 +1,14 @@
+# Normalize line endings in the repository to LF.
+# Without this, Windows-side editors and the blog cron job flip CRLF/LF and
+# every checkout shows the whole site as a spurious modification.
+* text=auto eol=lf
+
+# Never touch binary assets.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
