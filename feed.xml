@@ -5,7 +5,7 @@
   <link>https://matemplates.com/blog/</link>
   <description>Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, support triage, and lead enrichment — with real workflow teardowns.</description>
   <language>en</language>
-  <lastBuildDate>Mon, 28 Sep 2026 17:02:45 +0000</lastBuildDate>
+  <lastBuildDate>Sun, 04 Oct 2026 09:00:00 +0000</lastBuildDate>
   <atom:link href="https://matemplates.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
       <title>5 n8n Automations Every Solopreneur Should Steal in 2026</title>
@@ -84,6 +84,13 @@
     <guid isPermaLink="true">https://matemplates.com/blog/n8n-webhook-idempotency-double-charges.html</guid>
     <pubDate>Mon, 28 Sep 2026 17:02:45 +0000</pubDate>
     <description>Webhook providers retry on timeout, so your n8n workflow runs twice and fires the side effect twice. Build an idempotency gate with Respond to Webhook, a key check, and a Data Table.</description>
+  </item>
+  <item>
+    <title>n8n Backup &amp; Restore: Save a Self-Hosted Instance From Total Loss</title>
+    <link>https://matemplates.com/blog/n8n-backup-self-host-disaster-recovery.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-backup-self-host-disaster-recovery.html</guid>
+    <pubDate>Sun, 04 Oct 2026 09:00:00 +0000</pubDate>
+    <description>Back up a self-hosted n8n instance properly: export workflows and credentials, save the encryption key, and restore from a clean database in the right order.</description>
   </item>
 </channel>
 </rss>

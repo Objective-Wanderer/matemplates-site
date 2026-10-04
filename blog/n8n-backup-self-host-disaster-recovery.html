@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Backup &amp; Restore: Save a Self-Hosted Instance From Total Loss</title>
+<meta name="description" content="Back up a self-hosted n8n instance properly: export workflows and credentials, save the encryption key, and restore from a clean database in the right order.">
+<meta name="keywords" content="n8n backup, n8n restore, n8n disaster recovery, back up n8n workflows, n8n encryption key, n8n export workflow, n8n postgres backup, self-hosted n8n">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-backup-self-host-disaster-recovery.html">
+<meta property="og:title" content="n8n Backup &amp; Restore: Save a Self-Hosted Instance From Total Loss">
+<meta property="og:description" content="Back up a self-hosted n8n instance properly: export workflows and credentials, save the encryption key, and restore from a clean database in the right order.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-backup-self-host-disaster-recovery.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-backup-self-host-disaster-recovery.png?v=1790702400">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Backup &amp; Restore: Save a Self-Hosted Instance From Total Loss">
+<meta name="twitter:description" content="Back up a self-hosted n8n instance properly: export workflows and credentials, save the encryption key, and restore from a clean database in the right order.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-backup-self-host-disaster-recovery.png?v=1790702400">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  pre{background:#0b1220;border:1px solid var(--line, #22304d);border-radius:12px;padding:16px 18px;margin:16px 0;overflow-x:auto;font-size:13.5px;line-height:1.6;color:var(--mut, #9fb0c9);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  article p code, article li code, article h3 code{background:#111c31;border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14px;color:var(--acc2, #ffa14d)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Backup and Restore: Save a Self-Hosted Instance From Total Loss",
+  "datePublished": "2026-10-04",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-backup-self-host-disaster-recovery.png?v=1790702400",
+  "description": "Back up a self-hosted n8n instance properly: export workflows and credentials, save the encryption key, and restore from a clean database in the right order.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-backup-self-host-disaster-recovery.html"
+}
+</script>
+<!-- matemplates:analytics -->
+<script defer data-domain="matemplates.com" src="https://plausible.io/js/script.js"></script>
+<!-- /matemplates:analytics -->
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Operations</div>
+  <h1>n8n Backup &amp; Restore: Save a Self-Hosted Instance From Total Loss</h1>
+  <div class="meta">2026-10-04 · 7 min read</div>
+  <p class="lede">Self-hosting n8n puts your workflows in a database on a box you personally maintain. This is the backup plan that survives a dead VPS — and the one mistake that makes credentials permanently unreadable.</p>
+</section>
+
+<article>
+<h2>Why Self-Hosted n8n Is a Single Point of Failure</h2>
+<p>The moment you move off n8n Cloud, your automations stop being someone else's problem. Lead scoring, invoice chasing, Telegram alerts, the client-delivery pipeline you built last month — all of it lives in one Postgres database on one VPS. A provider doing a maintenance reboot, a disk filling up at 3 AM, an expired SSL certificate on the reverse proxy, or a well-meaning <code>docker compose down -v</code> turns every workflow you own into a memory.</p>
+<p>And the recovery is not "rebuild it and hope." Every workflow you hand-built took hours of node-by-node fiddling. Credentials — OAuth tokens for Google, your Telegram bot token, the Stripe key — took an afternoon of resetting passwords and re-consenting to scopes. Rebuilding from scratch is possible but brutal, and it is the kind of afternoon that happens at the worst possible time.</p>
+<p>So: three things to back up, one of which everybody forgets.</p>
+
+<h2>The Three Things That Actually Matter</h2>
+<p>A complete self-hosted n8n backup is small — measured in megabytes, not gigabytes, if you exclude execution history. It is made of exactly three artifacts, and two of them are useless without the third:</p>
+<ul>
+  <li><strong>Workflows</strong> — the node graphs themselves, exportable as JSON, one file per workflow.</li>
+  <li><strong>Credentials</strong> — encrypted in the database; exportable as ciphertext that needs the key below.</li>
+  <li><strong>The encryption key</strong> — <code>N8N_ENCRYPTION_KEY</code>, or the generated key file in the <code>~/.n8n</code> folder. <em>This is the one people skip, and losing it makes every stored credential permanently unreadable. There is no reset, no master key, no support ticket that recovers it.</em></li>
+</ul>
+<div class="card"><h3>The failure mode to internalise</h3><p>Restore a database dump onto a new server with a <em>different</em> encryption key and n8n starts up perfectly. The UI loads, every workflow is listed, the editor opens. Then the first run that touches a Google credential fails with a decryption error. Nothing looks wrong until it matters, and the only fix is the original key. Back up the dump and the key separately — they are two halves of one backup.</p></div>
+
+<h2>Exporting Workflows and Credentials with the CLI</h2>
+<p>n8n ships a server CLI that talks straight to the database and works even while n8n is stopped. The <code>--backup</code> flag is the one to learn: it expands to <code>--all --pretty --separate</code>, which is exactly what you want for versioning (one readable file per workflow instead of one unreadable blob).</p>
+<p>On a bare-metal or npm install, the <code>n8n</code> command is directly available. On Docker, run it inside the container as the <code>node</code> user:</p>
+<pre>docker exec -u node n8n n8n export:workflow --backup --output=/home/node/.n8n/backups/workflows
+docker exec -u node n8n n8n export:credentials --backup --output=/home/node/.n8n/backups/credentials</pre>
+<p>Two details in that snippet matter. <code>--separate</code> writes one JSON file per entity, so a diff on a workflow you edited yesterday shows exactly which node changed. And note there is no <code>--decrypted</code> flag: credentials stay encrypted, which is correct — the export is safe to store, and only becomes readable with the matching key.</p>
+<p>If you need a plain-text copy to migrate to an instance you cannot give the key to, the CLI does support <code>export:credentials --all --decrypted</code>. Treat that file as a live password file: it contains raw API keys and OAuth tokens, and it must never land in a public Git repo.</p>
+
+<h2>Scheduling It So You Never Think About It</h2>
+<p>A backup you run by hand is a backup that does not exist. Wire it into cron, and — critically — make it <em>alert you when it stops working</em>. A silent cron job that started failing eight weeks ago is the most common way people discover their backup was never really running.</p>
+<pre>0 3 * * * /opt/n8n-backup.sh &gt;&gt; /var/log/n8n-backup.log 2&gt;&amp;1
+# and, in the same script, ship the output somewhere you will actually notice</pre>
+<p>Inside the script, the minimum viable backup is three commands:</p>
+<ul>
+  <li><strong>Export workflows and credentials</strong> to a dated directory, as above.</li>
+  <li><strong>Dump the database</strong> — <code>pg_dump</code> for Postgres, or copy <code>database.sqlite</code> while n8n is stopped if you are still on SQLite. SQLite plus a running instance is a corrupt-backup generator; Postgres is the reason the official docs push you off it.</li>
+  <li><strong>Copy the encryption key</strong> and push everything to off-site storage — S3, Backblaze, or a private git repo for the JSON exports.</li>
+</ul>
+
+<h3>The unskipped step: prove the restore</h3>
+<p>A backup you have never restored from is a hypothesis. Once a quarter, stand up a throwaway instance, import the exports, and confirm a workflow actually runs end to end with a live credential:</p>
+<pre>n8n import:workflow --separate --input=./backups/workflows
+n8n import:credentials --separate --input=./backups/credentials</pre>
+<p>Ten minutes of work, and it converts "I think I backed it up" into a fact you can rely on when a VPS disappears.</p>
+
+<h2>Restore Order Matters</h2>
+<p>Restoring is not the same commands in reverse — the order is what makes it work. Follow the documented sequence:</p>
+<ul>
+  <li><strong>Stop n8n first.</strong> Importing into a live instance writes into a database that is actively being read.</li>
+  <li><strong>Restore the database</strong> from your dump, or place <code>database.sqlite</code> back into <code>~/.n8n</code>.</li>
+  <li><strong>Restore the <code>.n8n</code> folder</strong> to its original location, including any community nodes you installed via <code>N8N_CUSTOM_EXTENSIONS</code>.</li>
+  <li><strong>Restore the deployment configuration</strong> — the database connection variables, the same <code>N8N_ENCRYPTION_KEY</code>, and any external storage settings. Without these the instance starts and then cannot decrypt anything.</li>
+  <li><strong>Start n8n</strong> and open one workflow that uses a credential.</li>
+</ul>
+<p>If you are using workflow JSON exports rather than a full database dump, import credentials with the original key in place, and remember that imported workflows land inactive — you still have to publish or activate them before their schedules fire.</p>
+
+<h2>Version Control Your Workflows While You Are At It</h2>
+<p>Once the export produces one JSON file per workflow, put them in a git repo. Every workflow change becomes a reviewable commit with a diff, you can roll back a broken edit in seconds instead of reconstructing it, and a new instance — a client's server, a rebuild, a second VPS for redundancy — is an <code>import:workflow --separate</code> away instead of a fortnight of manual reconnection.</p>
+<p>Keep credentials out of that repo. Version the workflow graphs, store the encrypted credential export and the encryption key somewhere access-controlled and separate, and the whole thing becomes a recovery plan instead of a pile of hope.</p>
+
+<h2>The Five-Minute Checklist</h2>
+<ul>
+  <li>Workflows exported to JSON, one file per workflow, on a schedule.</li>
+  <li>Credentials exported encrypted, stored off-site.</li>
+  <li>Encryption key backed up <em>separately</em> from the database dump.</li>
+  <li>Database dumped (pg_dump on Postgres, stopped instance on SQLite).</li>
+  <li>A restore actually rehearsed, with the backup job's failure reported to you.</li>
+</ul>
+<p>Get those five right and a dead VPS costs you an afternoon of restoring instead of a month of rebuilding.</p><div class="card"><h3>Related templates</h3><ul><li><a href="/templates/real-estate-lead-enrichment.html">Real Estate Lead Enrichment</a></li><li><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
