@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Binary Data: How to Attach a PDF to an Email Without the Mystery Error</title>
+<meta name="description" content="Fix n8n attachments: learn what binary data is, why 'item has no binary field' happens, how to attach a PDF to a Gmail email, and how binary storage mode affects self-hosted instances.">
+<meta name="keywords" content="n8n binary data, n8n attachments, n8n send pdf email, n8n binary property, n8n file upload, n8n binary field error, N8N_DEFAULT_BINARY_DATA_MODE">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-binary-data-attachments-pdf-email.html">
+<meta property="og:title" content="n8n Binary Data: How to Attach a PDF to an Email Without the Mystery Error">
+<meta property="og:description" content="Fix n8n attachments: learn what binary data is, why 'item has no binary field' happens, how to attach a PDF to a Gmail email, and how binary storage mode affects self-hosted instances.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-binary-data-attachments-pdf-email.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-binary-data-attachments-pdf-email.png?v=1789418357">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Binary Data: How to Attach a PDF to an Email Without the Mystery Error">
+<meta name="twitter:description" content="Fix n8n attachments: what binary data is, why 'item has no binary field' happens, and how to attach a PDF to a Gmail email.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-binary-data-attachments-pdf-email.png?v=1789418357">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt)}
+  .nav .navcta{color:#14100a;background:var(--acc);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Binary Data: How to Attach a PDF to an Email Without the Mystery Error",
+  "datePublished": "2026-10-05",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-binary-data-attachments-pdf-email.png?v=1789418357",
+  "description": "Fix n8n attachments: learn what binary data is, why 'item has no binary field' happens, how to attach a PDF to a Gmail email, and how binary storage mode affects self-hosted instances.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-binary-data-attachments-pdf-email.html"
+}
+</script>
+<!-- matemplates:analytics -->
+<script defer data-domain="matemplates.com" src="https://plausible.io/js/script.js"></script>
+<!-- /matemplates:analytics -->
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Node mechanics</div>
+  <h1>n8n Binary Data: How to Attach a PDF to an Email Without the Mystery Error</h1>
+  <div class="meta">2026-10-05 · 8 min read</div>
+  <p class="lede">Every n8n beginner hits the same wall: the PDF downloads fine, the email node says it cannot find it. Here is what binary data actually is, why attachments silently vanish, and the four settings that fix it.</p>
+</section>
+
+<article>
+<h2>The Error That Sends Everyone to Google</h2>
+<p>You build the obvious workflow: a form trigger receives a PDF, a node converts it, then a Gmail node sends it to the customer. It fails with a message that reads like a bug report from someone else:</p>
+<pre><code>The item has no binary field 'data' (item 0)</code></pre>
+<p>Nothing is wrong with your logic. The problem is that you are mixing up two completely separate data channels that n8n carries in parallel, and almost every beginner assumes only one of them exists.</p>
+
+<h2>Two Channels: JSON and Binary</h2>
+<p>Every item flowing between n8n nodes has two halves. The <strong>JSON</strong> half holds structured, inspectable values — strings, numbers, objects, arrays. This is what you see in the JSON tab of the output panel, what expressions like <code>{{ $json.email }}</code> read from, and what almost every node parameter expects by default.</p>
+<p>The <strong>binary</strong> half holds raw file bytes — PDFs, images, spreadsheets, audio. This is what lives in the separate Binary tab of the output panel. Files are too large and too opaque to be JSON values, so n8n keeps them out of the text stream entirely.</p>
+<p>That is the whole model, and it explains every symptom:</p>
+<ul>
+  <li><strong>Why <code>{{ $binary.data }}</code> does nothing:</strong> it is a binary property, not a JSON property. You cannot interpolate raw file bytes into a text field, and a Code node that returns only <code>json</code> silently discards the binary half of every item.</li>
+  <li><strong>Why the fix is a name, not a path:</strong> binary items are keyed by a <em>property name</em>, usually <code>data</code>, <code>file</code>, or <code>attachment</code>. A node does not know your filename — it looks up that key.</li>
+  <li><strong>Why the key changes mid-workflow:</strong> nodes like <strong>Move Binary Data</strong>, <strong>Extract from File</strong>, and HTTP nodes with "Download" enabled decide the output key. If an upstream node emits <code>Bericht</code>, every downstream node must be told <code>Bericht</code>.</li>
+</ul>
+
+<h2>Fix 1: Match the Binary Property Name Exactly</h2>
+<p>This is the correct fix for roughly 80% of attachment failures, and it takes 30 seconds. Run the node that produces the file on its own, open the output panel, click the <strong>Binary</strong> tab, and copy the exact key name shown next to the file.</p>
+<p>Then open your email node and set its attachment field to that exact string:</p>
+<ul>
+  <li><strong>Gmail node → Attachments Input → Binary Property:</strong> set to the copied key, e.g. <code>data</code>.</li>
+  <li><strong>Send Email node → Attachments:</strong> the same idea — the field takes the binary property name, not the filename.</li>
+  <li><strong>If the email node expects an array of field names</strong> (some versions do), pass <code>{{ Object.keys($binary).join(',') }}</code> and it will pick up whatever keys are present on that item.</li>
+</ul>
+<p>Run the producing node alone, read the Binary tab, and you never have to guess a property name again. The names in the community forum posts that leave you stuck (<code>Bericht</code>, <code>image1868</code>) are real, and they are always discoverable the same way.</p>
+
+<h2>Fix 2: Stop Your Code Nodes From Dropping Files</h2>
+<p>The second most common cause is a Code node in the middle of the chain. If your code builds a brand-new object and returns only <code>json</code>, the binary payload is gone from that point onward — and the email node fails with the exact same "no binary field" message even though the name is right.</p>
+<p>Preserve both halves explicitly in the <strong>Run Once for All Items</strong> mode:</p>
+<pre><code>// ❌ drops the file — binary is gone from here on
+return items.map(i =&gt; ({ json: { email: i.json.email } }));
+
+// ✅ carries json and binary through
+return items.map(i =&gt; ({
+  json: { email: i.json.email },
+  binary: i.binary
+}));</code></pre>
+<p>Same rule for the <strong>Set</strong> and <strong>Aggregate</strong> nodes: set "Keep Only Set Fields" to off so existing binary data is retained. An Aggregate node set to <em>All Item Data</em> but with <em>Include Binaries</em> unchecked is a very common source of a one-line fix.</p>
+
+<h2>Fix 3: Convert the File to the Format You Actually Attach</h2>
+<p>Attaching a converted file needs two nodes, in the right order:</p>
+<ol>
+  <li><strong>Convert to File</strong> — takes a text/binary/JSON value and wraps it as a real file. It needs a <strong>Binary Property</strong> name and a <strong>File Name</strong>, e.g. <code>data</code> and <code>invoice.pdf</code>.</li>
+  <li><strong>Edit Fields (Set)</strong> or your email node — reference that same property name.</li>
+</ol>
+<p>A very common source of confusion is <strong>Extract from File</strong>. That node reads a file's contents into JSON — useful for reading a CSV or invoice PDF, and the opposite of attaching. Use it when you need to <em>parse</em>, and convert to file when you need to <em>send</em>. Running the wrong one of the pair is why the attachment "disappears" and turns up as an unreadable blob of text instead.</p>
+
+<h2>Fix 4: Binary Storage Mode Matters on Self-Hosted n8n</h2>
+<p>Where n8n keeps those bytes is a server-level decision, and it changes how reliable attachments are — especially if you self-host, which most of this site's readers do.</p>
+<ul>
+  <li><strong>Default (in-memory):</strong> files live in the process's memory during execution and in the database between executions. n8n's own docs note that large files in memory can crash the instance. Fine for small PDFs, risky for batches.</li>
+  <li><strong>Filesystem:</strong> set <code>N8N_DEFAULT_BINARY_DATA_MODE=filesystem</code> and files are written to disk under <code>N8N_USER_FOLDER/binaryData</code> (override with <code>N8N_BINARY_DATA_STORAGE_PATH</code>). This is the recommended mode for a single-instance self-hosted setup, and it is what keeps a 40MB upload from bloating your Postgres backups.</li>
+  <li><strong>Database:</strong> set the mode to <code>database</code> when you run <strong>queue mode</strong> with multiple workers — filesystem mode is <em>not supported</em> in queue mode. Each file is capped by <code>N8N_BINARY_DATA_DATABASE_MAX_FILE_SIZE</code>, 512 MiB by default, and cannot exceed the 1024 MiB column limit.</li>
+  <li><strong>S3 / Azure:</strong> external object storage for multi-worker production setups. External binary storage requires a self-hosted Business or Enterprise plan, and cannot be selected through <code>N8N_AVAILABLE_BINARY_DATA_MODES</code> without that licence.</li>
+</ul>
+<div class="card">
+  <h3>The backup consequence nobody warns you about</h3>
+  <p>If you switch binary modes, n8n only prunes the mode that is currently active — and your existing backup of the database will not contain the files that live on disk in filesystem mode. If you built a workflow that attaches PDFs, add <code>binaryData/</code> to the same backup job that dumps your database, or a restore will bring back every workflow with the attachments missing.</p>
+</div>
+<p>Pruning also runs against the active mode only, so leftover files from a previous mode can sit on disk indefinitely. Worth a <code>du -sh ~/.n8n/binaryData</code> on a self-hosted box every few weeks.</p>
+
+<h2>A Checklist That Prevents 95% of This Class of Bug</h2>
+<ul>
+  <li>Run the file-producing node alone and read the <strong>Binary</strong> tab. Never guess the key name.</li>
+  <li>Set the email node's attachment field to that exact key — no filename, no path, no quotes.</li>
+  <li>Any Code, Set, or Aggregate node between producer and email must carry <code>binary</code> through.</li>
+  <li>Use <code>Convert to File</code> to create a file; use <code>Extract from File</code> only to parse one. Never both for the same intent.</li>
+  <li>Confirm you have a Gmail credential with send scope, and that the account's daily sending quota is not the real failure.</li>
+  <li>On self-hosted, decide binary mode deliberately and back up whichever store you picked.</li>
+</ul>
+
+<h2>Related Reading</h2>
+<p>Binary data is where the abstractions leak. The same pairing — a trigger handing off to a downstream action — shows up in <a href="/blog/n8n-error-handling-dont-lose-a-run.html">setting up n8n error handling so a failed attachment never fails silently</a>, and in <a href="/blog/n8n-webhook-idempotency-double-charges.html">idempotency on webhooks, where the same retry that duplicates a charge also duplicates the attached invoice</a>. Get the error path right first and the binary field name is the only thing left to get right.</p>
+<div class="card"><h3>Related templates</h3><ul><li><a href="/templates/cold-outreach.html">Cold Outreach That Converts</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
