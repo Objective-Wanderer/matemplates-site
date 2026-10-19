@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Rate Limiting: Stop API 429s from Breaking Your Workflows</title>
+<meta name="description" content="API rate limits don't care about your concurrency. Learn practical n8n patterns to respect quotas, share limits across workflows, and stop thundering-herd retries from getting you banned.">
+<meta name="keywords" content="n8n rate limiting, n8n api rate limit, n8n 429 too many requests, n8n token bucket, n8n workflow throttling, n8n global rate limit">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-rate-limiting-api-quota.html">
+<meta property="og:title" content="n8n Rate Limiting: Stop API 429s from Breaking Your Workflows">
+<meta property="og:description" content="API rate limits don't care about your concurrency. Learn practical n8n patterns to respect quotas, share limits across workflows, and stop thundering-herd retries from getting you banned.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-rate-limiting-api-quota.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-rate-limiting-api-quota.png?v=1760900000">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Rate Limiting: Stop API 429s from Breaking Your Workflows">
+<meta name="twitter:description" content="API rate limits don't care about your concurrency. Learn practical n8n patterns to respect quotas, share limits across workflows, and stop thundering-herd retries from getting you banned.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-rate-limiting-api-quota.png?v=1760900000">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Rate Limiting: Stop API 429s from Breaking Your Workflows",
+  "datePublished": "2026-10-19",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-rate-limiting-api-quota.png?v=1760900000",
+  "description": "API rate limits don't care about your concurrency. Learn practical n8n patterns to respect quotas, share limits across workflows, and stop thundering-herd retries from getting you banned.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-rate-limiting-api-quota.html"
+}
+</script>
+<!-- matemplates:analytics -->
+<script defer data-domain="matemplates.com" src="https://plausible.io/js/script.js"></script>
+<!-- /matemplates:analytics -->
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Reliability</div>
+  <h1>n8n Rate Limiting: Stop API 429s from Breaking Your Workflows</h1>
+  <div class="meta">2026-10-19 · 9 min read</div>
+  <p class="lede">Your workflow runs fine in testing. Then Monday hits, five workflows fire at once, and the API bans you. Concurrency is not throughput — here is how to share a quota, respect Retry-After, and keep your automations alive under load.</p>
+</section>
+
+<article>
+<h2>The problem: every workflow thinks it owns the API</h2>
+<p>You have three workflows hitting the same third-party API — maybe it's an enrichment service, a CRM, or a payment provider. Each workflow has its own retry logic. Each one sees a <code>429</code>, waits a second, and retries. The problem: they all retry at the same time. The provider sees a spike, extends the ban, and your whole automation stack goes dark.</p>
+<p>This is the <strong>thundering herd</strong>. It happens because n8n workflows are isolated by design — they share no memory, no state, and no awareness of each other's API calls. The fix is not "add more retries." The fix is a <strong>shared rate limiter</strong> that sits in front of every outbound call to that API.</p>
+
+<h2>What a rate limiter actually does</h2>
+<p>A rate limiter answers one question: <em>"Can I make this call right now?"</em> If yes, it decrements the budget and lets the request through. If no, it calculates the wait time, pauses the execution, and then lets it through. That is it. The complexity is in making that answer consistent across <em>all</em> workflows hitting the same API.</p>
+<p>You need three pieces:</p>
+<ul>
+  <li><strong>A shared counter</strong> — lives outside any single workflow (Redis, a Google Sheet, Airtable, n8n Data Table, or a tiny SQLite file on the VPS).</li>
+  <li><strong>A token-budget algorithm</strong> — token bucket or leaky bucket. Token bucket is simpler: you have <code>N</code> tokens, each call costs one, tokens refill at <code>R</code> per second.</li>
+  <li><strong>A gate node</strong> — every workflow calls this before the HTTP Request. If the gate says wait, the workflow waits. If the gate says go, the workflow goes.</li>
+</ul>
+
+<h2>Pattern 1: Token bucket in a Google Sheet (zero infra, works everywhere)</h2>
+<p>If you self-host n8n on a VPS but don't run Redis, a Google Sheet is the fastest shared store to spin up. One sheet, two columns: <code>tokens</code> (number) and <code>last_refill</code> (ISO timestamp).</p>
+<p>The gate is a small sub-workflow (call it <strong>Rate Limit Gate</strong>) that every workflow invokes via <strong>Execute Workflow</strong> before the HTTP Request:</p>
+<pre><code>// Rate Limit Gate — Run Once for All Items
+// Input: { api: "apollo", cost: 1 }
+// Output: { allowed: true, wait_ms: 0 } or { allowed: false, wait_ms: 1250 }
+
+const sheet = getSharedSheet(); // your helper to read/write the sheet
+const now = Date.now();
+const refillRate = 10; // tokens per second (adjust to your API's limit)
+const maxTokens = 50;  // burst allowance
+
+const row = sheet.getRowByApiName($json.api);
+const elapsed = (now - new Date(row.last_refill).getTime()) / 1000;
+const currentTokens = Math.min(maxTokens, row.tokens + elapsed * refillRate);
+
+if (currentTokens >= $json.cost) {
+  row.tokens = currentTokens - $json.cost;
+  row.last_refill = new Date(now).toISOString();
+  sheet.updateRow(row);
+  return [{ json: { allowed: true, wait_ms: 0 } }];
+} else {
+  const needed = $json.cost - currentTokens;
+  const waitMs = Math.ceil((needed / refillRate) * 1000);
+  // do NOT update the sheet — the caller will wait and re-check
+  return [{ json: { allowed: false, wait_ms, retry_at: now + waitMs } }];
+}
+</code></pre>
+<p>The calling workflow adds an <strong>If</strong> node after the gate: if <code>allowed === false</code>, a <strong>Wait</strong> node pauses for <code>{{ $json.wait_ms }}</code> milliseconds, then loops back to the gate. If <code>allowed === true</code>, it proceeds to the HTTP Request.</p>
+<div class="card">
+  <h3>Why this beats per-workflow retries</h3>
+  <p>The sheet is the single source of truth. Five workflows calling the gate at the same millisecond read the same <code>tokens</code> value. Only the first few get <code>allowed: true</code>; the rest get a calculated wait and stagger their retries automatically. No thundering herd, no 429 storms.</p>
+</div>
+
+<h2>Pattern 2: Redis token bucket (production grade, sub-millisecond)</h2>
+<p>If you already run Redis (common for queue-mode n8n), use it. The Lua script runs atomically — no race conditions, no double-counting.</p>
+<pre><code>-- KEYS[1] = "ratelimit:apollo"
+-- ARGV[1] = max_tokens (50)
+-- ARGV[2] = refill_per_sec (10)
+-- ARGV[3] = cost (1)
+-- ARGV[4] = now_ms (timestamp)
+
+local key = KEYS[1]
+local max = tonumber(ARGV[1])
+local rate = tonumber(ARGV[2])
+local cost = tonumber(ARGV[3])
+local now = tonumber(ARGV[4])
+
+local bucket = redis.call('HMGET', key, 'tokens', 'last')
+local tokens = tonumber(bucket[1]) or max
+local last = tonumber(bucket[2]) or now
+
+local elapsed = (now - last) / 1000
+tokens = math.min(max, tokens + elapsed * rate)
+
+if tokens >= cost then
+  tokens = tokens - cost
+  redis.call('HMSET', key, 'tokens', tokens, 'last', now)
+  redis.call('EXPIRE', key, 86400)
+  return {1, 0, tokens} -- allowed, wait_ms, remaining
+else
+  local needed = cost - tokens
+  local wait = math.ceil((needed / rate) * 1000)
+  return {0, wait, tokens} -- denied, wait_ms, remaining
+end
+</code></pre>
+<p>Call it from n8n with an <strong>HTTP Request</strong> to a tiny Node/Go/Python shim that wraps <code>EVALSHA</code>, or use the <strong>Redis</strong> community node if you have it. The gate returns <code>allowed</code> and <code>wait_ms</code> — same contract as the Sheet version.</p>
+
+<h2>Pattern 3: n8n Data Table (no external deps, native)</h2>
+<p>Since n8n 1.0, Data Tables give you a built-in KV store. Create a table <code>rate_limits</code> with columns <code>api_key</code>, <code>tokens</code>, <code>last_refill</code>. The gate workflow uses two Data Table nodes: <strong>Select</strong> to read, <strong>Upsert</strong> to write. Same token-bucket math, zero external services.</p>
+<p>Trade-off: Data Tables live in your n8n database. Under heavy load (hundreds of calls/sec) they add write contention. For a solopreneur stack (<50 calls/min across all workflows) they are perfectly fine and keep the architecture simple.</p>
+
+<h2>Respect <code>Retry-After</code> — it is not optional</h2>
+<p>When the API <em>does</em> return <code>429</code>, it often includes a <code>Retry-After</code> header (seconds or an HTTP-date). Your HTTP Request node's <strong>Response</strong> tab should capture headers. Add a <strong>Code</strong> node after the request:</p>
+<pre><code>// After HTTP Request — handle 429 with server's guidance
+if ($json.statusCode === 429) {
+  const retryAfter = $json.headers['retry-after'];
+  let waitMs;
+  if (!isNaN(retryAfter)) {
+    waitMs = parseInt(retryAfter) * 1000; // seconds
+  } else {
+    // HTTP-date format
+    waitMs = new Date(retryAfter).getTime() - Date.now();
+  }
+  // also decrement our local bucket so we don't hammer it again
+  await decrementLocalBucket($json.api, 1);
+  return [{ json: { retry: true, wait_ms: Math.max(waitMs, 1000) } }];
+}
+return [{ json: { retry: false } }];
+</code></pre>
+<p>Then an <strong>If</strong> node: if <code>retry === true</code>, <strong>Wait</strong> for <code>wait_ms</code>, then loop back to the HTTP Request. This respects the server's explicit instruction instead of guessing.</p>
+
+<h2>Only retry what deserves a retry</h2>
+<p>The single biggest waste is retrying <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>. Those will fail identically on every attempt. Branch <strong>before</strong> the retry logic:</p>
+<pre><code>// Classify the response
+const code = $json.statusCode;
+if (code === 429 || code >= 500) return [{ json: { retryable: true } }];
+return [{ json: { retryable: false } }];
+</code></pre>
+<p>Only <code>429</code> and <code>5xx</code> enter the retry loop. Everything else fails fast, surfaces the real problem (bad credential, malformed payload, missing resource), and stops burning your retry budget.</p>
+
+<h2>Add jitter so retries don't synchronize</h2>
+<p>If ten workflows all wait exactly <code>1000ms</code> and retry together, you just recreated the thundering herd. Add ±25% jitter:</p>
+<pre><code>const base = $json.wait_ms;
+const jitter = base * 0.25 * (Math.random() * 2 - 1); // -25% to +25%
+const finalWait = Math.max(100, Math.floor(base + jitter));
+return [{ json: { wait_ms: finalWait } }];
+</code></pre>
+<p>This spreads the retry wave and lets the token bucket refill naturally.</p>
+
+<h2>Circuit breaker: stop calling a dead API</h2>
+<p>If an API returns <code>5xx</code> for <code>N</code> consecutive calls (e.g., 5 in a row), it is likely down. Continuing to call it wastes tokens, fills logs, and delays other workflows. A circuit breaker trips after the threshold and returns a fast failure for a cooldown period (e.g., 60 seconds).</p>
+<p>Implementation: a shared counter <code>consecutive_failures</code> in your rate-limit store. On success, reset to 0. On <code>5xx</code>, increment. If <code>>= 5</code>, set <code>circuit_open_until = now + 60000</code>. The gate checks this first — if the circuit is open, return <code>allowed: false, wait_ms: remaining_cooldown</code> without even touching the token bucket.</p>
+
+<h2>Where this fits alongside idempotency</h2>
+<p>Rate limiting and idempotency solve different failures:</p>
+<ul>
+  <li><strong>Rate limiting</strong> prevents you from <em>causing</em> the 429 by spacing calls.</li>
+  <li><strong>Idempotency</strong> (see <a href="/blog/n8n-webhook-idempotency-double-charges.html">n8n Webhook Idempotency</a>) protects you when the provider retries <em>despite</em> your 200.</li>
+</ul>
+<p>You need both. The rate limiter sits at the <strong>outbound</strong> edge (your HTTP Request). The idempotency gate sits at the <strong>inbound</strong> edge (your Webhook trigger). Together they bound the failure surface from both directions.</p>
+
+<h2>A checklist you can paste into your project</h2>
+<ul>
+  <li>Every outbound HTTP Request to a rate-limited API goes through a shared gate first.</li>
+  <li>The gate uses a token bucket (Sheet / Redis / Data Table) with the API's real limits.</li>
+  <li>On <code>429</code>, read <code>Retry-After</code>, wait that long, then re-check the gate.</li>
+  <li>Only retry <code>429</code> and <code>5xx</code> — fail fast on <code>4xx</code>.</li>
+  <li>Add ±25% jitter to every wait.</li>
+  <li>Circuit breaker trips after 5 consecutive <code>5xx</code>, cooldown 60s.</li>
+  <li>Log every gate decision (allowed/denied/wait) to a sheet — volume is your health metric.</li>
+</ul>
+
+<h2>Start with the Sheet gate</h2>
+<p>It takes 15 minutes to build, requires zero infra, and survives a VPS reboot. When you hit the contention ceiling (you'll know — the gate becomes the bottleneck), swap the Sheet for Redis. The calling workflows do not change — they still call <strong>Rate Limit Gate</strong> and read <code>allowed</code> / <code>wait_ms</code>.</p>
+<p>If you want a runnable starting point, the <a href="/templates/cold-outreach.html">Cold Outreach That Converts</a> template already has a per-workflow throttle. Extract that logic into the shared gate and you have the pattern in production today.</p>
+<div class="card"><h3>Related templates</h3><ul><li><a href="/templates/cold-outreach.html">Cold Outreach That Converts</a></li><li><a href="/templates/gumroad-sales-notifier.html">Gumroad Sales Notifier</a></li></ul></div>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:[EMAIL]">[EMAIL]</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
