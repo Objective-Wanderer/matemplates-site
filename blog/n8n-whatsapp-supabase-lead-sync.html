@@ -3,254 +3,203 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline</title>
-<meta name="description" content="Learn how to connect WhatsApp Business API to Supabase using n8n. Automate lead capture, qualify incoming prospects instantly, and store data securely without losing messages.">
-<meta name="keywords" content="n8n whatsapp integration, n8n supabase, whatsapp webhook n8n, automated lead qualification, n8n CRM automation">
+<title>n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human</title>
+<meta name="description" content="Connect WhatsApp Business API to Supabase with n8n. Capture every inbound message as a lead, score it automatically, and keep your CRM in sync - with the RLS and webhook details most guides skip.">
+<meta name="keywords" content="n8n whatsapp integration, n8n supabase, whatsapp webhook n8n, n8n lead qualification, whatsapp crm automation, n8n lead capture">
 <link rel="canonical" href="https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html">
-<meta property="og:title" content="n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline">
-<meta property="og:description" content="Learn how to connect WhatsApp Business API to Supabase using n8n. Automate lead capture, qualify incoming prospects instantly, and store data securely.">
+<meta property="og:title" content="n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human">
+<meta property="og:description" content="Connect WhatsApp Business API to Supabase with n8n. Capture every inbound message as a lead, score it automatically, and keep your CRM in sync - with the RLS and webhook details most guides skip.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html">
 <meta property="og:site_name" content="Matemplates">
-<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/no-code-crm-google-sheets-n8n.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-whatsapp-supabase-lead-sync.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline">
-<meta name="twitter:description" content="Connect WhatsApp Business API to Supabase using n8n for automated lead capture and qualification.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/no-code-crm-google-sheets-n8n.png">
+<meta name="twitter:title" content="n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human">
+<meta name="twitter:description" content="Connect WhatsApp Business API to Supabase with n8n. Capture every inbound message as a lead, score it automatically, and keep your CRM in sync - with the RLS and webhook details most guides skip.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-whatsapp-supabase-lead-sync.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
 <style>
-  :root {
-    --primary: #f97316;
-    --primary-dark: #ea580c;
-    --bg: #0f172a;
-    --card-bg: #1e293b;
-    --text: #f8fafc;
-    --text-muted: #94a3b8;
-    --border: #334155;
-  }
-  body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-  }
-  header {
-    background: var(--card-bg);
-    border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .logo {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .logo span {
-    color: var(--primary);
-  }
-  nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    margin-left: 1.5rem;
-    font-size: 0.95rem;
-  }
-  nav a:hover {
-    color: var(--primary);
-  }
-  main {
-    max-width: 800px;
-    margin: 3rem auto;
-    padding: 0 1.5rem;
-  }
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-  .meta {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-  }
-  h2 {
-    font-size: 1.75rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5rem;
-  }
-  h3 {
-    font-size: 1.25rem;
-    margin-top: 1.5rem;
-    color: var(--primary);
-  }
-  p, ul, ol {
-    margin-bottom: 1.25rem;
-    color: #cbd5e1;
-  }
-  ul, ol {
-    padding-left: 1.5rem;
-  }
-  li {
-    margin-bottom: 0.5rem;
-  }
-  code {
-    background: #090d16;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9em;
-    color: #fb923c;
-  }
-  pre {
-    background: #090d16;
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    border: 1px solid var(--border);
-    margin: 1.5rem 0;
-  }
-  pre code {
-    background: transparent;
-    padding: 0;
-    color: #e2e8f0;
-  }
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 2rem 0;
-  }
-  .cta-box {
-    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    margin: 3rem 0;
-  }
-  .cta-box h3 {
-    color: white;
-    margin-top: 0;
-    font-size: 1.5rem;
-  }
-  .cta-box p {
-    color: #ffedd5;
-  }
-  .btn {
-    display: inline-block;
-    background: white;
-    color: #c2410c;
-    font-weight: 700;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    margin-top: 1rem;
-    transition: background 0.2s;
-  }
-  .btn:hover {
-    background: #ffedd5;
-  }
-  footer {
-    text-align: center;
-    padding: 3rem 0;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    border-top: 1px solid var(--border);
-    margin-top: 4rem;
-  }
-  footer a {
-    color: var(--text-muted);
-    text-decoration: underline;
-  }
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
 </style>
 </head>
 <body>
+
+<div class="wrap">
+
 <header>
-  <a href="/" class="logo">mate<span>plates</span></a>
-  <nav>
-    <a href="/">Templates</a>
-    <a href="/blog/">Blog</a>
-    <a href="https://matemplates.gumroad.com" target="_blank">Store</a>
-  </nav>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
 </header>
 
-<main>
-  <h1>n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline</h1>
-  <div class="meta">Published October 20, 2026 • 8 min read</div>
+<section class="hero">
+  <div class="kicker">Lead Generation</div>
+  <h1>n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human</h1>
+  <div class="meta">2026-10-20 &middot; 8 min read</div>
+  <p class="lede">A WhatsApp message arrives at 11pm and nobody replies until morning - by then the prospect has booked elsewhere. Here is how to wire WhatsApp Business API into n8n and Supabase so every inbound message becomes a scored, stored lead the second it lands.</p>
+</section>
 
-  <p>Capturing leads from WhatsApp manually is a bottleneck. When prospective clients message your business outside of operating hours, delays in response directly lower your conversion rate. By combining <strong>n8n</strong>, the <strong>WhatsApp Business Cloud API</strong>, and <strong>Supabase</strong>, you can instantly ingest messages, qualify leads through automated prompts, and persist structured customer profiles in real time.</p>
+<article>
+<h2>The gap nobody closes: a message is not a lead</h2>
+<p>Most businesses treat a WhatsApp message like an email - read it, reply it, forget it. That works right up until you get enough volume that replies slip, and suddenly your pipeline is a folder of screenshots nobody can query.</p>
+<p>The real problem is not speed, it is <strong>structure</strong>. A message that arrives at 11pm is exactly as valuable as one that arrives at 11am, but only if it is captured the same way. Manual capture is also the most lossy thing in the funnel: you copy the number, you retype the requirement, you forget the intent, and three days later you cannot tell a hot lead from a price inquiry.</p>
+<p>Automating the capture is not glamorous, which is exactly why most teams never do it. It is also the single highest-leverage automation in a service business.</p>
 
-  <h2>The Architecture of the Pipeline</h2>
-  <p>A reliable WhatsApp automation workflow requires three core moving parts working in sync:</p>
-  <ul>
-    <li><strong>WhatsApp Cloud API Webhook:</strong> Receives inbound messages and payloads directly from Meta's servers when a user writes to your business number.</li>
-    <li><strong>n8n Core Workflow Engine:</strong> Parses incoming webhooks, extracts sender details, runs qualification logic or AI scoring, and orchestrates database storage.</li>
-    <li><strong>Supabase PostgreSQL Database:</strong> Stores lead profiles, conversation states, and qualification metadata with Row Level Security (RLS) enabled.</li>
-  </ul>
+<h2>The three pieces</h2>
+<ul>
+  <li><strong>WhatsApp Cloud API webhook</strong> - Meta POSTs every inbound message to a public URL you control. No polling, no scraping, no missed messages.</li>
+  <li><strong>n8n</strong> - receives the webhook, normalizes the payload, decides what kind of message it is, and routes it.</li>
+  <li><strong>Supabase</strong> - stores the lead row with the raw message, the extracted intent, and the score, behind Row Level Security.</li>
+</ul>
 
-  <div class="card">
-    <h3>Why Supabase over Google Sheets for WhatsApp CRM?</h3>
-    <p>While Google Sheets is great for rapid prototyping, high-volume WhatsApp messaging creates race conditions, rate limits (60 requests/minute), and row locking issues. Supabase provides instantaneous SQL indexing, relational data structures for message logs, and native Row Level Security so multi-agent or multi-tenant setups remain secure.</p>
-  </div>
+<div class="card">
+  <h3>Why not just a Google Sheet?</h3>
+  <p>A Sheet is a fine prototype and a poor database. Sheets caps out around 10,000 cells of read throughput per API call, has no real concurrency control, and every inbound webhook writing to it needs its own de-duplication logic. The moment two people message you at the same second you get either a rate-limit error or a silently lost row. Supabase gives you a real relational store, an index on the phone number, and RLS so a multi-tenant setup cannot leak one shop's leads into another's view.</p>
+</div>
 
-  <h2>Step 1: Setting up the WhatsApp Webhook in n8n</h2>
-  <p>Create a new n8n workflow and add a <strong>Webhook</strong> trigger node. Set the HTTP method to <code>GET</code> for webhook verification (Meta sends a challenge token) and <code>POST</code> for incoming message payloads.</p>
+<h2>Step 1 - The webhook, and the verification trap</h2>
+<p>Meta does not just start sending. When you register the callback URL, Meta sends a <code>GET</code> request with a <code>hub.challenge</code> query parameter and expects the raw value echoed back in the body. If you point the callback at an n8n Webhook node that only accepts <code>POST</code>, verification fails and the whole integration is dead on arrival.</p>
+<p>Two ways out. Set the n8n Webhook node to accept both methods and branch on <code>webhook.httpMethod</code>, or point Meta's callback at a tiny proxy that handles the challenge and forwards everything else. The second is cleaner if you ever need to add signature verification in front.</p>
+<p>Once it works, the inbound payload arrives with the shape you would expect:</p>
 
-  <pre><code>// Sample n8n Webhook JavaScript extraction node
-const body = $input.item.json.body;
-const entry = body.entry?.[0];
-const change = entry?.changes?.[0];
-const message = change?.value?.messages?.[0];
-const contact = change?.value?.contacts?.[0];
+<pre><code>{
+  "entry": [{
+    "changes": [{
+      "value": {
+        "messages": [{
+          "from": "[PHONE_PHONE]",
+          "text": { "body": "How much for a landing page automation?" },
+          "timestamp": "[PHONE]"
+        }],
+        "contacts": [{ "profile": { "name": "Dana" } }]
+      }
+    }]
+  }]
+}</code></pre>
+
+<p>The extraction node that turns that into something a workflow can use is short:</p>
+
+<pre><code>const body = $input.item.json.body;
+const value = body.entry?.[0]?.changes?.[0]?.value;
+const message = value?.messages?.[0];
+const contact = value?.contacts?.[0];
 
 return {
   phone: message?.from,
   name: contact?.profile?.name,
   text: message?.text?.body,
-  timestamp: message?.timestamp
+  ts: message?.timestamp
 };</code></pre>
 
-  <h2>Step 2: Automating Lead Qualification</h2>
-  <p>Once the webhook normalizes the incoming message, route the payload through a conditional switch or an LLM node to determine intent:</p>
-  <ul>
-    <li><strong>Hot Lead:</strong> Asking about pricing, booking, or immediate purchase. Trigger an instant WhatsApp template response and notify your sales team via Telegram or Slack.</li>
-    <li><strong>Support Inquiry:</strong> Asking for documentation or troubleshooting. Auto-reply with knowledge base links.</li>
-    <li><strong>Spam / Unqualified:</strong> Log to database without immediate interruption.</li>
-  </ul>
+<div class="card">
+  <h3>Do not trust the phone number blindly</h3>
+  <p>WhatsApp sends the sender in international format with no <code>+</code> and no spaces. Store it normalized - E.164 with a leading <code>+</code> - or every lookup you write later will miss. The same message can also arrive from a number you have seen under two formats if the customer changed SIMs or used a landline gateway.</p>
+</div>
 
-  <h2>Step 3: Storing Leads in Supabase</h2>
-  <p>Use the n8n <strong>Supabase</strong> node (or standard HTTP Request node pointing to your Supabase REST API) to upsert the lead record:</p>
+<h2>Step 2 - Qualify before you store, or after?</h2>
+<p>Store the raw message first, then qualify. That ordering matters: if your classifier breaks, or you rewrite the logic next month, you still have every original message to reprocess. A workflow that classifies before persisting throws away the evidence you need to fix the classifier.</p>
+<p>Three branches cover most inbound volume:</p>
+<ul>
+  <li><strong>Hot</strong> - pricing, timelines, "can you do this for me". Reply with a template message instantly and ping a human on Telegram. This is the only branch where speed changes the outcome.</li>
+  <li><strong>Support</strong> - existing customer asking how something works. Auto-reply with a link, flag for the morning queue.</li>
+  <li><strong>Everything else</strong> - log it with a lower score and let it age out. Most inbound messages are noise, and treating them as noise is free.</li>
+</ul>
 
-  <pre><code>// Supabase upsert payload structure
+<p>An LLM node does the classification better than keyword matching, but keep the keywords path as a fallback - a model provider hiccup should not mean a lead goes uncaptured.</p>
+
+<h2>Step 3 - Upsert into Supabase</h2>
+<p>Use an upsert keyed on the phone number, not an insert. The same prospect asks a follow-up question two days later, and you want one row with a history - not two rows that split their thread.</p>
+
+<pre><code>// n8n Supabase node - upsert on phone_number
 {
-  "phone_number": "+1234567890",
-  "full_name": "John Doe",
-  "last_message": "Interested in your n8n templates bundle",
-  "status": "qualified",
-  "updated_at": "2026-10-20T12:00:00Z"
+  "phone_number": "+[PHONE_PHONE]",
+  "full_name": "Dana",
+  "last_message": "How much for a landing page automation?",
+  "intent": "hot",
+  "status": "new",
+  "score": 82,
+  "last_seen_at": "2026-10-20T11:03:22Z"
 }</code></pre>
 
-  <div class="cta-box">
-    <h3>Ready to Automate Your Business?</h3>
-    <p>Get our production-ready n8n templates with built-in error handling, Supabase sync, and Telegram alerts.</p>
-    <a href="https://matemplates.gumroad.com" class="btn" target="_blank">Browse n8n Templates on Gumroad</a>
-  </div>
+<p>The upsert has to <em>not</em> clobber fields a human already edited. If you always write the whole row, a lead your team just renamed to "Dana - Agency (budget 3k)" loses that context the next time the prospect sends a message. Either write only the columns you computed, or use <code>on_conflict</code> with an update mask that excludes human-owned columns.</p>
 
-  <h2>Conclusion</h2>
-  <p>Automating your WhatsApp lead capture with n8n and Supabase eliminates manual data entry, cuts response times to zero, and ensures every prospect is qualified and stored securely. Combine this with our pre-built automation templates to launch your pipeline in under an hour.</p>
-</main>
+<h2>The multi-tenant trap</h2>
+<p>One CRM, several shops, one database. The moment you add a second tenant, every query needs a tenant filter - and every query you forget becomes a data leak between businesses.</p>
+<p>Supabase's Row Level Security fixes this at the database level rather than the application level. The policy reads the tenant from the JWT, not from a parameter the client controls, so a user cannot select a different tenant by changing the request:</p>
+
+<pre><code>-- The policy everyone should copy
+create policy "tenant_isolation" on leads
+  for all
+  using (
+    tenant_id = (
+      select tenant_id from profiles
+      where id = auth.uid()
+    )
+  );</code></pre>
+
+<p>Two rules make this actually hold. First, enable RLS on the table and verify it is enabled - a table with policies but RLS off has no protection at all. Second, the service-role key bypasses RLS entirely, so never ship it to the browser or use it for user-facing queries; it is for admin scripts only.</p>
+
+<div class="card">
+  <h3>The bug that leaks a tenant</h3>
+  <p>Using the <code>service_role</code> key in the browser bundle. It bypasses every RLS policy, ships in plain JavaScript to every visitor, and turns your policy from "the second line of defence" into "documentation". Use the anon key client-side and let RLS do the work.</p>
+</div>
+
+<h2>Verify it before you trust it</h2>
+<p>The only test that matters is a negative one. Create two tenants, insert a lead in each, then query as tenant A and confirm you get A's rows and nothing else. A test that only proves the happy path proves nothing - a missing RLS policy and a working one look identical from the inside.</p>
+<p>Then check the webhook is actually delivering: log the raw payload at the entry node, send yourself a WhatsApp message, and confirm the row appears. Most "the integration is broken" reports are a webhook pointed at the wrong URL, not a broken workflow.</p>
+
+<h2>Where this goes next</h2>
+<p>Once capture is solid, the same pattern works for every channel you answer on - Telegram, Instagram, email. Normalize each into one lead shape, and the qualification logic becomes one workflow instead of three. That is the point of building the schema first: the connectors change, the pipeline does not.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
 
 <footer>
-  <p>&copy; 2026 Matemplates. All rights reserved. Built for solopreneurs & automation engineers.</p>
-  <p><a href="/">Home</a> • <a href="/blog/">Blog</a> • <a href="https://matemplates.gumroad.com" target="_blank">Gumroad Store</a></p>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:[EMAIL]">[EMAIL]</a></div>
 </footer>
 
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

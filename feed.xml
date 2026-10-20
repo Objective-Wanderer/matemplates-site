@@ -106,5 +106,12 @@
     <pubDate>Mon, 19 Oct 2026 09:00:00 +0000</pubDate>
     <description>API rate limits don't care about your concurrency. Learn practical n8n patterns to respect quotas, share limits across workflows, and stop thundering-herd retries from getting you banned.</description>
   </item>
+  <item>
+    <title>n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human</title>
+    <link>https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html</guid>
+    <pubDate>Tue, 20 Oct 2026 09:00:00 +0000</pubDate>
+    <description>Connect WhatsApp Business API to Supabase with n8n. Capture every inbound message as a lead, score it automatically, and keep your CRM in sync - with the RLS and webhook details most guides skip.</description>
+  </item>
 </channel>
 </rss>
