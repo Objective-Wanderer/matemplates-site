@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline</title>
+<meta name="description" content="Learn how to connect WhatsApp Business API to Supabase using n8n. Automate lead capture, qualify incoming prospects instantly, and store data securely without losing messages.">
+<meta name="keywords" content="n8n whatsapp integration, n8n supabase, whatsapp webhook n8n, automated lead qualification, n8n CRM automation">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html">
+<meta property="og:title" content="n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline">
+<meta property="og:description" content="Learn how to connect WhatsApp Business API to Supabase using n8n. Automate lead capture, qualify incoming prospects instantly, and store data securely.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/no-code-crm-google-sheets-n8n.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline">
+<meta name="twitter:description" content="Connect WhatsApp Business API to Supabase using n8n for automated lead capture and qualification.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/no-code-crm-google-sheets-n8n.png">
+<style>
+  :root {
+    --primary: #f97316;
+    --primary-dark: #ea580c;
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+  }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span {
+    color: var(--primary);
+  }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-size: 0.95rem;
+  }
+  nav a:hover {
+    color: var(--primary);
+  }
+  main {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .meta {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-size: 1.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    color: var(--primary);
+  }
+  p, ul, ol {
+    margin-bottom: 1.25rem;
+    color: #cbd5e1;
+  }
+  ul, ol {
+    padding-left: 1.5rem;
+  }
+  li {
+    margin-bottom: 0.5rem;
+  }
+  code {
+    background: #090d16;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #fb923c;
+  }
+  pre {
+    background: #090d16;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: #e2e8f0;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin: 3rem 0;
+  }
+  .cta-box h3 {
+    color: white;
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+  .cta-box p {
+    color: #ffedd5;
+  }
+  .btn {
+    display: inline-block;
+    background: white;
+    color: #c2410c;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: background 0.2s;
+  }
+  .btn:hover {
+    background: #ffedd5;
+  }
+  footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  footer a {
+    color: var(--text-muted);
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">mate<span>plates</span></a>
+  <nav>
+    <a href="/">Templates</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://matemplates.gumroad.com" target="_blank">Store</a>
+  </nav>
+</header>
+
+<main>
+  <h1>n8n + WhatsApp + Supabase: Build an Automated Lead Capture & Qualification Pipeline</h1>
+  <div class="meta">Published October 20, 2026 • 8 min read</div>
+
+  <p>Capturing leads from WhatsApp manually is a bottleneck. When prospective clients message your business outside of operating hours, delays in response directly lower your conversion rate. By combining <strong>n8n</strong>, the <strong>WhatsApp Business Cloud API</strong>, and <strong>Supabase</strong>, you can instantly ingest messages, qualify leads through automated prompts, and persist structured customer profiles in real time.</p>
+
+  <h2>The Architecture of the Pipeline</h2>
+  <p>A reliable WhatsApp automation workflow requires three core moving parts working in sync:</p>
+  <ul>
+    <li><strong>WhatsApp Cloud API Webhook:</strong> Receives inbound messages and payloads directly from Meta's servers when a user writes to your business number.</li>
+    <li><strong>n8n Core Workflow Engine:</strong> Parses incoming webhooks, extracts sender details, runs qualification logic or AI scoring, and orchestrates database storage.</li>
+    <li><strong>Supabase PostgreSQL Database:</strong> Stores lead profiles, conversation states, and qualification metadata with Row Level Security (RLS) enabled.</li>
+  </ul>
+
+  <div class="card">
+    <h3>Why Supabase over Google Sheets for WhatsApp CRM?</h3>
+    <p>While Google Sheets is great for rapid prototyping, high-volume WhatsApp messaging creates race conditions, rate limits (60 requests/minute), and row locking issues. Supabase provides instantaneous SQL indexing, relational data structures for message logs, and native Row Level Security so multi-agent or multi-tenant setups remain secure.</p>
+  </div>
+
+  <h2>Step 1: Setting up the WhatsApp Webhook in n8n</h2>
+  <p>Create a new n8n workflow and add a <strong>Webhook</strong> trigger node. Set the HTTP method to <code>GET</code> for webhook verification (Meta sends a challenge token) and <code>POST</code> for incoming message payloads.</p>
+
+  <pre><code>// Sample n8n Webhook JavaScript extraction node
+const body = $input.item.json.body;
+const entry = body.entry?.[0];
+const change = entry?.changes?.[0];
+const message = change?.value?.messages?.[0];
+const contact = change?.value?.contacts?.[0];
+
+return {
+  phone: message?.from,
+  name: contact?.profile?.name,
+  text: message?.text?.body,
+  timestamp: message?.timestamp
+};</code></pre>
+
+  <h2>Step 2: Automating Lead Qualification</h2>
+  <p>Once the webhook normalizes the incoming message, route the payload through a conditional switch or an LLM node to determine intent:</p>
+  <ul>
+    <li><strong>Hot Lead:</strong> Asking about pricing, booking, or immediate purchase. Trigger an instant WhatsApp template response and notify your sales team via Telegram or Slack.</li>
+    <li><strong>Support Inquiry:</strong> Asking for documentation or troubleshooting. Auto-reply with knowledge base links.</li>
+    <li><strong>Spam / Unqualified:</strong> Log to database without immediate interruption.</li>
+  </ul>
+
+  <h2>Step 3: Storing Leads in Supabase</h2>
+  <p>Use the n8n <strong>Supabase</strong> node (or standard HTTP Request node pointing to your Supabase REST API) to upsert the lead record:</p>
+
+  <pre><code>// Supabase upsert payload structure
+{
+  "phone_number": "+1234567890",
+  "full_name": "John Doe",
+  "last_message": "Interested in your n8n templates bundle",
+  "status": "qualified",
+  "updated_at": "2026-10-20T12:00:00Z"
+}</code></pre>
+
+  <div class="cta-box">
+    <h3>Ready to Automate Your Business?</h3>
+    <p>Get our production-ready n8n templates with built-in error handling, Supabase sync, and Telegram alerts.</p>
+    <a href="https://matemplates.gumroad.com" class="btn" target="_blank">Browse n8n Templates on Gumroad</a>
+  </div>
+
+  <h2>Conclusion</h2>
+  <p>Automating your WhatsApp lead capture with n8n and Supabase eliminates manual data entry, cuts response times to zero, and ensures every prospect is qualified and stored securely. Combine this with our pre-built automation templates to launch your pipeline in under an hour.</p>
+</main>
+
+<footer>
+  <p>&copy; 2026 Matemplates. All rights reserved. Built for solopreneurs & automation engineers.</p>
+  <p><a href="/">Home</a> • <a href="/blog/">Blog</a> • <a href="https://matemplates.gumroad.com" target="_blank">Gumroad Store</a></p>
+</footer>
+
+</body>
+</html>
