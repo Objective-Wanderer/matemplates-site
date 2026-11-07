@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends</title>
+<meta name="description" content="A Schedule Trigger fires once. A daily digest that runs twice because of a retry, a timezone, or a manual test sends two Telegram messages and two emails. Add a run-key, a store, and a lock so the same day can only ever send once.">
+<meta name="keywords" content="n8n schedule trigger, n8n cron trigger, n8n daily digest, n8n duplicate send, n8n timezone, n8n idempotent schedule, n8n run once per day">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-schedule-trigger-daily-digest.html">
+<meta property="og:title" content="n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends">
+<meta property="og:description" content="A Schedule Trigger fires once. A daily digest that runs twice because of a retry, a timezone, or a manual test sends two Telegram messages and two emails. Add a run-key, a store, and a lock so the same day can only ever send once.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-schedule-trigger-daily-digest.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-schedule-trigger-daily-digest.png?v=1">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends">
+<meta name="twitter:description" content="A Schedule Trigger fires once. A daily digest that runs twice because of a retry, a timezone, or a manual test sends two Telegram messages. Add a run-key, a store, and a lock so the same day can only ever send once.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-schedule-trigger-daily-digest.png?v=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Reliability</div>
+  <h1>n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends</h1>
+  <div class="meta">Nov 8, 2026 · 8 min read</div>
+  <p class="lede">Your Schedule Trigger is set for 08:00. You get the digest at 08:00 and again at 08:01. Not because the trigger fired twice — because the first run was retried, or you pressed "Execute workflow" to test it, or the instance restarted between the send and the finish. A daily digest needs a lock, not just a cron expression.</p>
+</section>
+
+<article>
+<h2>Why a schedule trigger alone double-sends</h2>
+<p>The trigger fires on time. That is all it promises. It does not promise the workflow will finish once. Three normal events break the assumption that one fire means one send:</p>
+<ul>
+  <li><strong>A retry.</strong> n8n retries a failed execution. If the Telegram node actually delivered but the database write after it timed out, the retry sends the same digest again.</li>
+  <li><strong>A manual test.</strong> You click "Execute workflow" to check the new customer list. The test runs the real send nodes. The scheduled run 20 minutes later sends the same digest.</li>
+  <li><strong>A restart or a long queue.</strong> A self-hosted instance that restarts, or a run that queues behind a slow API call, can deliver at 08:00 and again after recovery. The time looks right. The content is identical. Two messages land in your inbox 90 seconds apart.</li>
+</ul>
+<p>None of these are bugs in n8n. They are the reason every scheduled sender in production treats "run this once per day" as an application-level guarantee, not a trigger property.</p>
+
+<h2>The run-key pattern</h2>
+<p>Give the day a key, and refuse to send a key that already sent. The key is the workflow name plus the calendar date. For a daily digest that key is always the same shape:</p>
+<pre><code>// Code node, right after the Schedule Trigger
+const today = new Date()
+  .toLocaleDateString('en-CA', { timeZone: 'Africa/Cairo' }); // YYYY-MM-DD
+return [{ json: { run_key: 'daily-digest:' + today, today } }];</code></pre>
+<p>Pin the timezone here. A digest keyed to UTC sends "today's" numbers at the wrong boundary for anyone not on UTC — the digest goes out at 01:00 local with yesterday's data. Set the timezone once in n8n settings (Settings → Timezone) for every workflow, then reuse the same zone in the Code node so the key and the display date agree.</p>
+<p>Now check the store before you build anything. Use the smallest store you already have — a Data Table, a Google Sheet row, or a Supabase table with a unique constraint on <code>run_key</code>. The unique constraint is the point: the check-then-insert race is exactly what a second concurrent run hits, and the database is the only thing that can refuse both.</p>
+<pre><code>// Code node, after the store lookup
+const already = await $node['Lookup Run'].json();
+if (already && already.sent_at) {
+  return [{ json: { skip: true, reason: 'already sent ' + already.run_key } }];
+}
+return [{ json: {
+  run_key: $json.run_key, today: $json.today, skip: false
+} }];</code></pre>
+<p>Branch on <code>skip</code>. The skip path ends immediately — no query, no build, no send. That matters: a skipped run that still queries the CRM and drafts the email is a run that still looks busy in the execution log and can still fail.</p>
+
+<div class="card">
+  <h3>Write the lock before you send, not after</h3>
+  <p>Insert the <code>run_key</code> row with <code>sent_at = null</code> <em>before</em> the send nodes, then update it with the real timestamp after the send succeeds. If the run dies mid-send, the row exists and the next run skips — better to miss one digest than to send it three times. A unique constraint on <code>run_key</code> turns a race into a clean error you can branch on instead of a duplicate message.</p>
+</div>
+
+<h2>Manual test mode that cannot send</h2>
+<p>The manual test is the most common duplicate. Split the workflow at the lock:</p>
+<ul>
+  <li><strong>Trigger A — Schedule Trigger.</strong> Runs the full path: lock check, build digest, send, stamp.</li>
+  <li><strong>Trigger B — Manual Trigger.</strong> Runs the same build path but skips the lock check and ends at a "preview" node that writes the digest to a log or a draft channel, never to the real recipient.</li>
+</ul>
+<p>Both triggers feed one Code node that computes the digest body. Only the scheduled branch connects to the send nodes. When you verify a change, you use Trigger B, see the rendered digest, and know it never reached a subscriber.</p>
+
+<h2>The five-node skeleton</h2>
+<p>The whole pattern is five nodes plus the digest build itself:</p>
+<pre><code>[Schedule Trigger]  (08:00, your timezone)
+  |
+[Code: compute run_key]        daily-digest:2026-11-08
+  |
+[Data Table / Supabase: lookup run_key]
+  |
+[IF skip = true]  ->  [Stop]           (already sent, end quietly)
+  |
+[Data Table: insert run_key, sent_at = null]   (the lock)
+  |
+[Build digest]  (CRM query, counts, list)
+  |
+[Telegram / Email: send]
+  |
+[Data Table: update sent_at = now]     (close the lock)
+  |
+[Log: one line to your error workflow if anything threw]</code></pre>
+<p>Two details people skip. First, the insert must be a <em>create-if-absent</em>, not an upsert that silently overwrites — an upsert lets two concurrent runs both "win". Second, the final update must run even if the send node throws, so wrap the send in an error branch that writes <code>sent_at</code> and an <code>error</code> column together. A row that never closes is a digest that never retries, which is the correct failure: silent absence beats duplicate delivery for a daily summary.</p>
+
+<h2>When the digest must be hourly, not daily</h2>
+<p>The same lock works for any period. Change the key granularity: <code>digest:2026-11-08T08</code> for hourly, <code>digest:2026-11</code> for monthly. Keep the store prune job the same shape too — delete rows older than 90 days in a weekly cleanup workflow so the table does not grow forever. What you should not do is stretch the key to a week for a daily digest: a week-long key means a failed Monday blocks Tuesday through Sunday.</p>
+
+<h2>Where this ships today</h2>
+<p>The run-key, lock-before-send, and manual-preview pattern above is bundled as a ready-to-import workflow on <a href="https://matemplate.gumroad.com">the store</a>. Point the store node at your own Data Table or Sheet, set the timezone, and the next scheduled run sends exactly once — even if you tested it at 07:55.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:[EMAIL]">[EMAIL]</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
