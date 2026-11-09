@@ -113,7 +113,8 @@
     {"@type": "BlogPosting", "headline": "n8n Rate Limiting: Stop API 429s from Breaking Your Workflows", "url": "https://matemplates.com/blog/n8n-rate-limiting-api-quota.html", "datePublished": "2026-10-19"},
     {"@type": "BlogPosting", "headline": "n8n WhatsApp + Supabase: Capture and Qualify Leads Without a Human", "url": "https://matemplates.com/blog/n8n-whatsapp-supabase-lead-sync.html", "datePublished": "2026-10-20"},
     {"@type": "BlogPosting", "headline": "n8n Sub-workflows: How to Build Modular Automations That Don't Break at Scale", "url": "https://matemplates.com/blog/n8n-sub-workflows-modular-automation.html", "datePublished": "2026-10-27"},
-    {"@type": "BlogPosting", "headline": "n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends", "url": "https://matemplates.com/blog/n8n-schedule-trigger-daily-digest.html", "datePublished": "2026-11-08"}
+    {"@type": "BlogPosting", "headline": "n8n Schedule Trigger: Build a Daily Digest That Never Double-Sends", "url": "https://matemplates.com/blog/n8n-schedule-trigger-daily-digest.html", "datePublished": "2026-11-08"},
+    {"@type": "BlogPosting", "headline": "n8n Pagination: Stop Duplicate Records When APIs Use Cursors", "url": "https://matemplates.com/blog/n8n-pagination-cursor-dedupe.html", "datePublished": "2026-11-09"}
   ]
 }
 </script>
@@ -328,6 +329,17 @@
       <p>A Schedule Trigger fires once. A digest that runs twice — a retry, a manual test, a restart — sends two Telegram messages and two emails. Add a run-key, a store, and a lock so the same day can only ever send once.</p>
       <div class="meta">Nov 8, 2026 · 8 min read</div>
       <a class="btn" href="/blog/n8n-schedule-trigger-daily-digest.html">Read the post &#8594;</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <img src="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-pagination-cursor-dedupe.png?v=1" alt="n8n Pagination: Stop Duplicate Records When APIs Use Cursors cover" width="1280" height="720">
+    <div class="cbody">
+      <div class="kicker">Reliability</div>
+      <h2>n8n Pagination: Stop Duplicate Records When APIs Use Cursors</h2>
+      <p>Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap — build one that terminates on its own.</p>
+      <div class="meta">Nov 9, 2026 · 8 min read</div>
+      <a class="btn" href="/blog/n8n-pagination-cursor-dedupe.html">Read the post &#8594;</a>
     </div>
   </article>
 

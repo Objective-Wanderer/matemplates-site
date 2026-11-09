@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Pagination: Stop Duplicate Records When APIs Use Cursors</title>
+<meta name="description" content="Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap — build one that terminates on its own.">
+<meta name="keywords" content="n8n pagination, n8n cursor pagination, n8n next_token, n8n split in batches pagination, n8n duplicate records, n8n api loop">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-pagination-cursor-dedupe.html">
+<meta property="og:title" content="n8n Pagination: Stop Duplicate Records When APIs Use Cursors">
+<meta property="og:description" content="Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap — build one that terminates on its own.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-pagination-cursor-dedupe.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-pagination-cursor-dedupe.png?v=1">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Pagination: Stop Duplicate Records When APIs Use Cursors">
+<meta name="twitter:description" content="Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-pagination-cursor-dedupe.png?v=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Reliability</div>
+  <h1>n8n Pagination: Stop Duplicate Records When APIs Use Cursors</h1>
+  <div class="meta">Nov 9, 2026 · 8 min read</div>
+  <p class="lede">Your workflow pulls 500 rows from an API that pages by cursor. It imports them — twice. Page 2 is Page 1 again, page 3 is both. The cursor never advanced, so the loop never ended. Here is the loop that actually terminates, dedupes, and caps itself.</p>
+</section>
+
+<article>
+<h2>Why cursor loops duplicate in n8n</h2>
+<p>Most APIs that “page” today use a cursor, not a page number. You send <code>cursor</code> (or <code>next_token</code>) in the request, the response gives you <code>next_cursor</code>, and you send that back until <code>next_cursor</code> is null or missing. The shape is simple. The n8n implementation is where it breaks.</p>
+<p>Three failures show up in every solopreneur stack:</p>
+<ul>
+  <li><strong>The cursor is never passed back.</strong> The HTTP Request node has a static query parameter, the Loop node feeds the <em>items</em> back but not the <em>cursor</em> from the last response, so the API returns page 1 repeatedly. The workflow “works” — it imports the same 100 rows nine times.</li>
+  <li><strong>No termination check.</strong> The response body has <code>next_cursor</code> on every page <em>except</em> the last, but the workflow keeps looping on any non-empty response. When the API is done, <code>next_cursor</code> is <code>null</code> — the If node that should exit still lets it through.</li>
+  <li><strong>No dedupe, no cap.</strong> Even with a correct cursor, a retry or a slow page can return the same record twice. Without a <code>seen</code> set and a max-page budget, one stuck cursor becomes an infinite loop that fills your database and your API quota.</li>
+</ul>
+<p>None of these need a newer node. They need the loop to carry state — cursor, seen ids, and page count — on every iteration.</p>
+
+<h2>The five-state loop</h2>
+<p>Carry one state object through the loop: <code>cursor</code>, <code>page</code>, <code>seen</code>, <code>items</code>, and <code>done</code>. The <strong>Split In Batches</strong> node is the loop primitive; a Code node before it owns the state.</p>
+<pre><code>// Code node: "Init pagination state"
+// Runs once before the loop. One item in, one state object out.
+return [{
+  json: {
+    cursor: null,      // null = first page
+    page: 0,
+    seen: [],          // ids already returned (dedupe)
+    items: [],         // accumulated rows (or write to a table instead)
+    done: false,
+    max_pages: 50,     // hard cap — never loop forever
+    page_size: 100
+  }
+}];</code></pre>
+
+<h2>Fetch, dedupe, advance — in that order</h2>
+<p>The HTTP Request node uses the state's cursor. The Code node after it does not just pass items through — it filters them, appends to state, and decides whether to loop again.</p>
+<pre><code>// Code node: "Process page, dedupe, next state"
+// Input: one item per API record (from HTTP Request response)
+//        + the previous state carried in $json.state
+const prev = $json.state || {};
+const seen = new Set(prev.seen || []);
+const items = [...(prev.items || [])];
+const page = (prev.page || 0) + 1;
+
+for (const it of $input.all()) {
+  const rec = it.json;
+  const id = rec.id ?? rec._id ?? rec.email;
+  if (id && seen.has(String(id))) continue; // duplicate from retry/slow page
+  if (id) seen.add(String(id));
+  items.push(rec);
+}
+
+const nextCursor = $node['HTTP Request'].json.next_cursor
+                ?? $node['HTTP Request'].json.next_token
+                ?? null;
+
+return [{
+  json: {
+    state: {
+      cursor: nextCursor,
+      page,
+      seen: [...seen],
+      items,
+      done: !nextCursor || page >= (prev.max_pages ?? 50),
+      max_pages: prev.max_pages ?? 50,
+      page_size: prev.page_size ?? 100
+    }
+  }
+}];</code></pre>
+<p>Two points matter. First, read the cursor from the <em>HTTP node's output</em>, not from the current input item — n8n's <code>$input.all()</code> here is data rows, not pagination metadata. Second, dedupe <em>before</em> you write — if the response was a retry of the last page, the seen set is what stops the duplicate from reaching Supabase or Sheets.</p>
+
+<div class="card">
+  <h3>Write after the loop, not inside it</h3>
+  <p>Do not upsert each page as it arrives. Accumulate in state, exit the loop on <code>done === true</code>, then write once. If you crash on page 7 of 20, you have lost nothing durable — the next run starts from page 1 and the seen set is rebuilt. If you write inside the loop, a crash on page 7 leaves 600 rows in the table and no record of where you stopped. The dedupe set protects the final write — it does not make partial writes safe.</p>
+</div>
+
+<h2>The If node that ends the loop</h2>
+<p>Connect the Process node to an <strong>If</strong> node: <code>{{ $json.state.done === true }}</code>. True branch goes to your final write (or a Set node that unwraps <code>items</code> into rows). False branch loops back to the HTTP Request — and a Code node there injects <code>{{ $json.state.cursor }}</code> as the query parameter.</p>
+<p>Wire the Loop branch back to the <em>Init</em> node only if the Split In Batches index is the loop driver. In practice the cleanest shape is:</p>
+<pre><code>[Init state]
+  |
+[HTTP Request: query cursor = {{ $json.state.cursor }}]
+  |
+[Code: process page, dedupe, next state]
+  |
+[If done?]
+  |- true  -> [Set: unwrap items] -> [Write once: Supabase/Sheets/CRM]
+  |- false -> [Wait 500ms (politeness for tight rate limits)] -> back to [HTTP Request]</code></pre>
+<p>The Wait is optional but cheap. If you already rate-limit globally, you can drop it — the point is the loop-back edge exists and the <code>done</code> flag is the only exit.</p>
+
+<h2>Offset pagination is the same skeleton</h2>
+<p>If the API uses <code>offset</code> / <code>limit</code> instead of a cursor, the loop is identical: state carries <code>offset</code>, each page advances it by <code>page_size</code>, and <code>done</code> is <code>items.length &lt; page_size || page &gt;= max_pages</code>. The dedupe and cap do not change. A page that returns fewer rows than requested is the API telling you it is empty — treat short page as done, not as a reason to advance.</p>
+<p>A short final page also catches a classic bug: APIs that return <code>200 OK</code> with an empty array. An empty array with a <code>next_cursor</code> still set is a stuck cursor — the page cap is what stops you. Never trust the cursor alone.</p>
+
+<h2>Where this ships today</h2>
+<p>The init-state, dedupe, and loop-back pattern above is bundled as a ready-to-import workflow on <a href="https://matemplate.gumroad.com">the store</a>. Point the HTTP node at your API, set <code>page_size</code> and <code>max_pages</code>, and the loop terminates on its own — duplicates filtered, no infinite run, one write at the end.</p>
+</article>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab one and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/#templates">Templates</a> &middot; <a href="mailto:[EMAIL]">[EMAIL]</a></div>
+</footer>
+
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "061d128bc266438b8f8b4a5f99461731"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

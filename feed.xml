@@ -5,7 +5,7 @@
   <link>https://matemplates.com/blog/</link>
   <description>Practical n8n automation guides for solopreneurs and small teams: Telegram sale alerts, cold outreach that converts, invoice follow-ups, support triage, and lead enrichment — with real workflow teardowns.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 08 Nov 2026 09:00:00 +0000</lastBuildDate>
+  <lastBuildDate>Mon, 09 Nov 2026 09:00:00 +0000</lastBuildDate>
   <atom:link href="https://matemplates.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
       <title>5 n8n Automations Every Solopreneur Should Steal in 2026</title>
@@ -126,6 +126,13 @@
     <guid isPermaLink="true">https://matemplates.com/blog/n8n-schedule-trigger-daily-digest.html</guid>
     <pubDate>Sun, 08 Nov 2026 09:00:00 +0000</pubDate>
     <description>A Schedule Trigger fires once. A daily digest that runs twice because of a retry, a manual test, or a restart sends two Telegram messages and two emails. Add a run-key, a store, and a lock so the same day can only ever send once.</description>
+  </item>
+  <item>
+    <title>n8n Pagination: Stop Duplicate Records When APIs Use Cursors</title>
+    <link>https://matemplates.com/blog/n8n-pagination-cursor-dedupe.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-pagination-cursor-dedupe.html</guid>
+    <pubDate>Mon, 09 Nov 2026 09:00:00 +0000</pubDate>
+    <description>Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap — build one that terminates on its own.</description>
   </item>
 </channel>
 </rss>
