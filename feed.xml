@@ -134,5 +134,12 @@
     <pubDate>Mon, 09 Nov 2026 09:00:00 +0000</pubDate>
     <description>Page 1 loads fine. Page 2 repeats Page 1, Page 3 repeats both. Cursor pagination in n8n needs a next-token loop, a seen set, and a hard page cap — build one that terminates on its own.</description>
   </item>
+  <item>
+    <title>n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows</title>
+    <link>https://matemplates.com/blog/n8n-google-sheets-read-write.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-google-sheets-read-write.html</guid>
+    <pubDate>Mon, 16 Nov 2026 09:00:00 +0000</pubDate>
+    <description>Upsert a row on every write so webhook retries, manual tests, and restarts never create duplicate rows in your Google Sheet. One pattern: key on a business value, then check-then-write.</description>
+  </item>
 </channel>
 </rss>

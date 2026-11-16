@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows</title>
+<meta name="description" content="Two rules stop the most common n8n Sheets bug: upsert on every write, and match the column name exactly. The pattern that keeps your Sheets CRM from silently duplicating rows.">
+<meta name="keywords" content="n8n google sheets, n8n upsert, n8n sheets duplicate rows, n8n google sheets workflow, n8n sheets automation, n8n read write sheet">
+<link rel="canonical" href="https://matemplates.com/blog/n8n-google-sheets-read-write.html">
+<meta property="og:title" content="n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows">
+<meta property="og:description" content="Two rules stop the most common n8n Sheets bug: upsert on every write, and match the column name exactly.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://matemplates.com/blog/n8n-google-sheets-read-write.html">
+<meta property="og:site_name" content="Matemplates">
+<meta property="og:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-google-sheets-read-write-guide.png?v=1">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows">
+<meta name="twitter:description" content="Two rules stop the most common n8n Sheets bug: upsert on every write, and match the column name exactly.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-google-sheets-read-write-guide.png?v=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1b2a'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23ff7a00' font-family='Arial' font-weight='bold'>M</text></svg>">
+<style>
+  :root{--bg:#070d18;--bg2:#0c1526;--card:#101b30;--card2:#14203a;--line:#22304d;--line2:#2e4066;--txt:#eef3fb;--mut:#9fb0c9;--mut2:#7e90ad;--acc:#ff7a00;--acc2:#ffa14d;--grn:#5ee98a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 500px at 50% -100px,#16233f 0%,#070d18 60%);color:var(--txt, #eef3fb);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(7,13,24,.88);backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line, #22304d)}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px;text-decoration:none;color:var(--txt, #eef3fb)}
+  .logo span{color:var(--acc, #ff7a00)}
+  .nav a{color:var(--mut, #9fb0c9);text-decoration:none;margin-left:18px;font-size:14px}
+  .nav a:hover{color:var(--txt, #eef3fb)}
+  .nav .navcta{color:#14100a;background:var(--acc, #ff7a00);padding:7px 14px;border-radius:8px;font-weight:700}
+  .hero{padding:56px 0 20px}
+  .kicker{font-size:12px;letter-spacing:3px;color:var(--acc, #ff7a00);font-weight:700;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,40px);font-weight:800;line-height:1.16;margin-top:14px}
+  .hero .meta{color:var(--mut2, #7e90ad);font-size:13.5px;margin-top:14px}
+  .hero p.lede{color:var(--mut, #9fb0c9);font-size:18px;margin-top:18px}
+  article h2{font-size:24px;margin:38px 0 12px;color:var(--txt, #eef3fb)}
+  article h3{font-size:19px;margin:26px 0 8px;color:var(--acc2, #ffa14d)}
+  article p{color:var(--mut, #9fb0c9);margin:12px 0;font-size:16px}
+  article ul{color:var(--mut, #9fb0c9);margin:12px 0 12px 22px;font-size:16px}
+  article li{margin:6px 0}
+  article a{color:var(--acc, #ff7a00);text-decoration:none}
+  article a:hover{text-decoration:underline}
+  article code{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:5px;padding:1px 6px;font-size:14.5px;color:var(--acc2)}
+  article pre{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:14px;color:var(--mut, #9fb0c9)}
+  article pre code{background:none;border:none;padding:0;color:inherit}
+  .card{background:var(--card, #101b30);border:1px solid var(--line, #22304d);border-radius:14px;padding:20px;margin:18px 0}
+  .card h3{margin-top:0;color:var(--txt, #eef3fb)}
+  .cta{text-align:center;padding:40px 0 24px}
+  .cta .box{background:linear-gradient(180deg,var(--card2, #14203a),var(--card, #101b30));border:1px solid var(--line, #22304d);border-radius:18px;padding:36px 26px}
+  .cta h2{margin:0 0 10px;font-size:24px}
+  .cta p{color:var(--mut, #9fb0c9);margin-bottom:20px}
+  .btn{display:inline-block;background:var(--acc, #ff7a00);color:#14100a;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none;font-size:15px}
+  .btn:hover{filter:brightness(1.08)}
+  footer{border-top:1px solid var(--line, #22304d);padding:24px 0;color:var(--mut, #9fb0c9);font-size:13px;margin-top:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--mut, #9fb0c9)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows",
+  "datePublished": "2026-11-16",
+  "author": {"@type": "Organization", "name": "Matemplates"},
+  "publisher": {"@type": "Organization", "name": "Matemplates", "url": "https://matemplates.com"},
+  "image": "https://raw.githubusercontent.com/Objective-Wanderer/brand-assets/main/covers/n8n-google-sheets-read-write-guide.png?v=1",
+  "description": "Two rules stop the most common n8n Sheets bug: upsert on every write, and match the column name exactly. The pattern that keeps your Sheets CRM from silently duplicating rows.",
+  "mainEntityOfPage": "https://matemplates.com/blog/n8n-google-sheets-read-write.html"
+}
+</script>
+<!-- matemplates:analytics -->
+<script defer data-domain="matemplates.com" src="https://plausible.io/js/script.js"></script>
+<!-- /matemplates:analytics -->
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <a class="logo" href="/">mate<span>mplates</span></a>
+  <nav class="nav"><a href="/blog/">Blog</a><a class="navcta" href="https://matemplate.gumroad.com">Store &#8599;</a></nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">Sheets as your DB</div>
+  <h1>n8n Google Sheets: The Upsert Pattern That Won't Duplicate Your Rows</h1>
+  <div class="meta">Nov 16, 2026 · 9 min read</div>
+  <p class="lede">You build a workflow that writes a lead to Google Sheets. The next day you check: 47 rows for the same lead. The cause is not your data — it is that you wrote, then the workflow retried, then you tested it, then a webhook duplicated the payload. The fix is one pattern: upsert on every write, keyed on a business value, never on the row number.</p>
+</section>
+
+<article>
+<h2>Why your Sheets writes are duplicating</h2>
+<p>The most common n8n-to-Sheets failure is not that the write fails. It is that the write succeeds twice. Three events produce the second row for the same lead:</p>
+<ul>
+  <li><strong>A webhook retry.</strong> The Google Sheets node returned a 5xx (or timed out at the provider), the caller re-sent the identical payload, and n8n ran the whole thing again.</li>
+  <li><strong>A manual test.</strong> You clicked "Execute workflow" to check the output, and the test ran the real Sheet-write node. Later, the scheduled run wrote the same row again.</li>
+  <li><strong>A restarted instance.</strong> A run that was mid-send when the VPS restarted filed the same write twice across the restart boundary.</li>
+</ul>
+<p>n8n has no memory of the first write. It sees a new trigger payload and starts a new execution. The only thing standing between you and a growing pile of duplicate rows is an upsert: a check-then-write that refuses to insert a row whose business key already exists.</p>
+<p>The two rules are simple. Write them on a sticky note.</p>
+<ol>
+  <li><strong>Key on a business value, never on the row number.</strong> Row numbers move when someone sorts or filters the sheet. A customer's email, invoice number, or lead ID does not.</li>
+  <li><strong>Write every time, but make writes idempotent.</strong> Upsert on every run. The check then insert path, and the skip path, must both end cleanly.</li>
+</ol>
+
+<h2>The check-then-write pattern, step by step</h2>
+<p>You need three things in one execution: look up whether the business key exists, branch on the answer, and write. The cleanest way is a small skeleton that you copy into every workflow that writes to your sheet.</p>
+
+<h3>Step 1: Build a key node</h3>
+<p>Right after the trigger (webhook, schedule, or manual), add a <strong>Code</strong> node that builds a single string from your business key. For a lead list that is usually the email address; for an invoice dunning workflow it is the invoice number. Keep the key stable: lowercase and trim the email, and do not change the format between runs.</p>
+<pre><code>// Code node: build the business key
+const email = $json.email ? $json.email.trim().toLowerCase() : '';
+const key = email || 'unknown:' + $json.full_name + ':' + $json.source;
+return [{ json: { sheet_key: key, source: $json } }];</code></pre>
+<p>If your payload has a stable ID (Stripe <code>id</code>, Shopify <code>X-Shopify-Event-Id</code>, GitHub <code>X-GitHub-Delivery</code>), use that instead — it is unique across the entire platform, not just your own workflows.</p>
+
+<h3>Step 2: Look up the row</h3>
+<p>Two options, chosen by how many rows you expect.</p>
+<p><strong>Small or medium sheets (under ~10,000 rows).</strong> Use a <strong>Google Sheets</strong> node in <strong>Read</strong> mode with <code>Range</code> <code>A:E</code> and a <strong>Filter</strong> on the email column. It is simple and is the one the n8n template library uses. The filter is the important part — filtering on the sheet itself costs a round-trip to Google, so do it in the node, not in a Code node.</p>
+<p><strong>Large sheets or high write volume.</strong> Use the <strong>Lookup</strong> node (or a Data Table). A Lookup node is faster than a Google Sheets read because it queries n8n's own local database instead of hitting Google's API, so you save on quota and latency.</p>
+<pre><code>// Code node: check if the key exists
+const existing = await $workflow.parameters.sheet_rows || [];
+const match = existing.find(r => r.email === $json.email);
+return [{ json: { already_exists: !!match, row: match } }];</code></pre>
+<p>The lookup must run <strong>before</strong> the first node that touches the outside world. If you place it after the email-send node, you have already duplicated the side effect.</p>
+
+<h3>Step 3: Branch, then write</h3>
+<p>Use an <strong>IF</strong> node on the <code>already_exists</code> flag.</p>
+<p><strong>New lead:</strong> connect the "no match" branch to the rest of your workflow, ending in a <strong>Google Sheets</strong> node with operation <strong>Create</strong> (or <strong>Append</strong>). The sheet row must include every column the sheet expects. A row missing a column will be written as <code>null</code> or rejected with a cryptic error.</p>
+<p><strong>Already known:</strong> connect the "match found" branch to a <strong>Google Sheets</strong> node with operation <strong>Update</strong>. This is where you update the existing row's updated fields — say, <code>last_contacted</code> and <code>status</code> — and leave the untouched columns alone.</p>
+<p>Do not use a separate <strong>Get Row</strong> then <strong>Update</strong> as two steps. One Update call with the full row replaces the whole row, and a JSON node between the lookup and the update is the only way to carry the existing values forward safely.</p>
+
+<h2>Write every time — but make the write idempotent</h2>
+<p>The trap is to skip the write on the "already exists" branch, thinking "nothing to do". n8n no longer runs the workflow for that pagination window, but the caller does not know that. The fix is to run the full write path on every execution — the row you update is the row you just read. The update is a no-op if nothing changed, which is harmless.</p>
+<p>The pattern, in full:</p>
+<pre><code>[Webhook / Schedule / Manual Trigger]
+  |
+  v
+[Code: build sheet_key]
+  |
+  v
+[Google Sheets: Read]          // or Lookup/Code — columns A:Z
+  |
+  v
+[If: sheet_key === row.email]
+  |
+  +-- NO  --> [Code: current = row (copy)]
+  |             [Code: merged = Object.assign({}, current, $json)]
+  |             [Google Sheets: Update row]`   // operation = update
+  |             // end workflow
+  |
+  +-- YES --> [Code: new row = merge(current, $json)]
+              [Google Sheets: Append]          // operation = create
+              // end workflow</code></pre>
+<p>The <strong>copy-then-merge</strong> step is the one people skip, and it is why updates silently drop fields. If your sheet has 14 columns and your workflow only touches three, a plain <code>Append</code> adds a row missing eleven columns. The copy pulls the existing row, the merge overlays the new fields, and the update replaces the whole row with a complete one.</p>
+<p>Use the same key for the <em>read</em> as for the <em>write</em>. If you look up by email but write by name, you will keep creating duplicate rows on customers whose name changes or who type their email differently each time.</p>
+
+<h2>Upsert for existing rows: the exact code</h2>
+<p>For the "already exists" branch, this Code node produces the merged row you then pass to the Update node:</p>
+<pre><code>// Code node: merge new fields on top of the existing row
+const existing = $json.row || {};
+const merged = Object.assign({}, existing, $json);
+// always refresh the updated timestamp
+merged.updated_at = new Date().toISOString();
+return [{ json: merged }];</code></pre>
+<p>Then the Google Sheets node, configured exactly like this:</p>
+<ul>
+  <li><strong>Operation:</strong> Update</li>
+  <li><strong>Sheet name:</strong> the sheet you write to (add <code>!A:Z</code> if your sheet is a specific tab)</li>
+  <li><strong>Range:</strong> the address of the existing row, e.g. <code>B2:N2</code> — the first cell is the row you matched, and the range covers every column</li>
+  <li><strong>Extra columns:</strong> only the columns you want to set; the two code nodes above set the rest</li>
+</ul>
+<p>A common misconfiguration is leaving "Extra columns" populated with the overwritten values. The Update node will write those back again, clobbering your computed fields. Leave it empty.</p>
+
+<h2>The three most common mistakes</h2>
+<ul>
+  <li><strong>Writing with $json instead of ${(workflow.parameters.sheet_rows || [])}.</strong> The trigger payload is the webhook body, which may contain only some fields. The row you read from the sheet is the full record, and it is what you must carry forward.</li>
+  <li><strong>Filtering the sheet by row number.</strong> "Get rows 5 to 5" breaks the moment your sheet is sorted, and it never finds rows you appended above. Filter by content, never by position.</li>
+  <li><strong>Trusting the sheet to dedupe.</strong> Google Sheets has no built-in dedup. A <code>UNIQUE</code> formula in a helper column can catch duplicates after the fact, but it cannot stop the write; it only cleans up afterward. The guard belongs in n8n.</li>
+</ul>
+
+<h2>When you should not use a sheet at all</h2>
+<p>If your list exceeds ~20,000 rows, or you need to query it by several different keys, a spreadsheet is the wrong store and n8n's database is a better one. The same upsert pattern maps directly to a <strong>Supabase</strong> table (with a unique constraint on the key column) or a <strong>Data Table</strong> — both index the lookup and both reject duplicate inserts on their own. The n8n template library ships a "Sheets as DB" template that shows the same skeleton against Supabase, so switching storage later is a node swap, not a rewrite.</p>
+
+<section class="cta">
+  <div class="box">
+    <h2>Want the workflow, not the write-up?</h2>
+    <p>Every Matemplates workflow imports into your own n8n instance — you own it, run it free, and edit it. Grab the Sheets upsert template and ship today.</p>
+    <a class="btn" href="https://matemplate.gumroad.com">Browse the store &#8594;</a>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 Matemplates &middot; n8n workflow templates</div>
+  <div><a href="/blog/">Blog</a> &middot; <a href="/templates/n8n-google-sheets.html">Templates</a> &middot; <a href="mailto:support@matemplates.com">support@matemplates.com</a></div>
+</footer>
+
+</div>
+</body>
+</html>
