@@ -141,5 +141,12 @@
     <pubDate>Mon, 16 Nov 2026 09:00:00 +0000</pubDate>
     <description>Upsert a row on every write so webhook retries, manual tests, and restarts never create duplicate rows in your Google Sheet. One pattern: key on a business value, then check-then-write.</description>
   </item>
+  <item>
+    <title>From Form to Follow-Up: Automate Lead Capture with n8n</title>
+    <link>https://matemplates.com/blog/n8n-google-forms-welcome-email.html</link>
+    <guid isPermaLink="true">https://matemplates.com/blog/n8n-google-forms-welcome-email.html</guid>
+    <pubDate>Mon, 23 Nov 2026 09:00:00 +0000</pubDate>
+    <description>Turn each form submission into a CRM row, a welcome email, and a Slack alert — automatically. Covers the webhook trigger, field normalization, upsert, and an immediate welcome email.</description>
+  </item>
 </channel>
 </rss>
